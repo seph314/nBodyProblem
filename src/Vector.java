@@ -1,6 +1,6 @@
 public class Vector {
-    int length;
-    private double[] coordinates;
+    int vectorLength;
+    double[] coordinates;
 
     /**
      * Vector Constructor
@@ -19,23 +19,70 @@ public class Vector {
      * @return
      */
     public Vector scalarProduct(double s) {
-        double[] coords = new double[length];
-        for (int i = 0; i < length; i++) {
+        double[] coords = new double[vectorLength];
+        for (int i = 0; i < vectorLength; i++) {
             coords[i] = s * coordinates[i];
         }
         return new Vector(coords);
     }
 
     /**
-     * Calculates the addition of two vectors
-     * @param argumentsVector
+     * Calculates the dotProduct
+     * of two Vectors a = [a1,a2,..,an] and b =[b1,b2,..,bn]
+     * as a1*b1 + a2*b2 + ... + an*bn
+     * @return dotProduct
+     */
+    public double dotProduct(Vector argumentVector){
+        double dotProduct = 0;
+        for (int i = 0; i< vectorLength; i++){
+            dotProduct += coordinates[i] * argumentVector.coordinates[i];
+        }
+        return dotProduct;
+    }
+
+    /**
+     * Calculates the magnitude
+     * To do this we find the hypotenuse h och the triangle x,y,h
      * @return
      */
-    public Vector addition(Vector argumentsVector){
-        double[] resultCoordinates = new double[length];
-        for (int i = 0; i < length; i++) {
-            resultCoordinates[i] = coordinates[i] + argumentsVector.coordinates[i];
+    public double magnitude(){
+        return Math.sqrt(this.dotProduct(this));
+    }
+
+    /**
+     * Calculates the add of two vectors
+     * @param argumentVector
+     * @return
+     */
+    public Vector add(Vector argumentVector){
+        double[] resultCoordinates = new double[vectorLength];
+        for (int i = 0; i < vectorLength; i++) {
+            resultCoordinates[i] = coordinates[i] + argumentVector.coordinates[i];
         }
         return new Vector(resultCoordinates);
     }
+
+    /**
+     * Calculates subtract of two vectors
+     * TODO double check this implementation
+     * @param argumentsVector
+     * @return
+     */
+    public Vector subtract(Vector argumentsVector){
+        double[] resultCoordinates = new double[vectorLength];
+        for (int i = 0; i < vectorLength; i++) {
+            resultCoordinates[i] = coordinates[i] - argumentsVector.coordinates[i];
+        }
+        return new Vector(resultCoordinates);
+    }
+
+    /**
+     * Calculates Direction
+     * @returna vector with the same direction as this vector
+     */
+    public Vector direction(){
+        return this.scalarProduct(1/this.magnitude());
+    }
+
+
 }
