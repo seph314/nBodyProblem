@@ -1,9 +1,9 @@
 
 public class Body {
 
-    Vector position;            /* position */
-    Vector velocity;            /* velocity */
-    double mass;                /* mass */
+    private Vector position;            /* position */
+    private Vector velocity;            /* velocity */
+    private double mass;                /* mass */
     private final double G = 6.67e-11;  /* gravitational constant */
 
     /**
@@ -12,7 +12,7 @@ public class Body {
      * @param velocity is the velocity
      * @param mass is the mass
      */
-    public Body(Vector position, Vector velocity, double mass) {
+    Body(Vector position, Vector velocity, double mass) {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
@@ -40,5 +40,15 @@ public class Body {
         return delta.direction().scalarProduct(force);
     }
 
+    public double[] getPosition() {
+        return position.coordinates;
+    }
 
+    public Vector getVelocity() {
+        return velocity;
+    }
+
+    public double getMass() {
+        return mass;
+    }
 }

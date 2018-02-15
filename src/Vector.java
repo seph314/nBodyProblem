@@ -1,3 +1,4 @@
+
 public class Vector {
     int vectorLength;
     double[] coordinates;

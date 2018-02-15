@@ -4,20 +4,17 @@ public class Driver {
 
     public static void main(String[] args) {
 
-        double[] arrayOne = {2,3};
-        double[] arrayTwo = {4,5};
-        Vector vectorOne = new Vector(arrayOne);
-        Vector vectorTwo = new Vector(arrayTwo);
+        Body[] bodies;
+        int dt = 2;
+        System.out.println("N-body problem (or maybe, opportunity?)");
+        Simulation simulation = new Simulation(); /* creates bodies via the Simulation constructor */
+        bodies = simulation.getBodies();
 
-        Vector force = new Vector(arrayOne);
-        double dt = 22;
+        System.out.println(Arrays.toString(bodies[0].getPosition()));
 
-        Body bodyOne = new Body(vectorOne,vectorTwo,10);
-        Body bodyTwo = new Body(vectorTwo,vectorOne,200);
+        Vector force = bodies[0].calculateForces(bodies[1]); /* calculate the force between two bodies */
+        bodies[0].movePoints(force, dt);
 
-        bodyOne.calculateForces(bodyTwo);
-        bodyOne.movePoints(force, dt);
-
+        System.out.println(Arrays.toString(bodies[0].getPosition()));
     }
-
 }
