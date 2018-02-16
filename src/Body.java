@@ -44,8 +44,8 @@ public class Body {
         return position.coordinates;
     }
 
-    public Vector getVelocity() {
-        return velocity;
+    public double[] getVelocity() {
+        return velocity.coordinates;
     }
 
     public double getMass() {

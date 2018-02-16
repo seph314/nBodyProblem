@@ -1,6 +1,6 @@
 
 public class Vector {
-    int vectorLength;
+    private int vectorLength;
     double[] coordinates;
 
     /**
@@ -8,6 +8,7 @@ public class Vector {
      * @param input is input coordinates
      */
     public Vector(double[] input) {
+        vectorLength = input.length;
         coordinates = new double[input.length];
         for (int i = 0; i < input.length; i++) {
             coordinates[i] = input[i];
@@ -85,5 +86,11 @@ public class Vector {
         return this.scalarProduct(1/this.magnitude());
     }
 
+    public double getX() {
+        return coordinates[0];
+    }
+    public double getY() {
+        return coordinates[1];
+    }
 
 }
