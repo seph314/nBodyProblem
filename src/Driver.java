@@ -11,6 +11,9 @@ public class Driver {
         bodies = simulation.getBodies();
 
         System.out.println(Arrays.toString(bodies[0].getPosition()));
+        System.out.println(Arrays.toString(bodies[1].getPosition()));
+        System.out.println(Arrays.toString(bodies[2].getPosition()));
+
 
         Vector force = bodies[0].calculateForces(bodies[1]); /* calculate the force between two bodies */
         bodies[0].movePoints(force, dt);
