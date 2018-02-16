@@ -7,7 +7,7 @@ public class Vector {
      * Vector Constructor
      * @param input is input coordinates
      */
-    public Vector(double[] input) {
+    Vector(double[] input) {
         vectorLength = input.length;
         coordinates = new double[input.length];
         for (int i = 0; i < input.length; i++) {

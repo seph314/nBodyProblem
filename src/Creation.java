@@ -2,20 +2,20 @@
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Simulation {
+public class Creation {
 
     private Body[] bodies;
 
     /**
      * Generates custom value bodies
      */
-    Simulation (){
+    Creation() {
         Scanner scanner = new Scanner(System.in); /* create a Scanner */
         System.out.print("Number of bodies: ");
         int numberOfBodies = scanner.nextInt();
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
 
-        for (int i = 0; i<numberOfBodies; i++){
+        for (int i = 0; i < numberOfBodies; i++) {
 
             /* read x and y values for the position- and velocity vector */
             System.out.print("Body " + i + " px: ");
@@ -36,20 +36,21 @@ public class Simulation {
             Vector positionVector = new Vector(postion);
             Vector velocityVector = new Vector(velocity);
             /* add a new body to bodies */
-            bodies[i] = new Body(positionVector,velocityVector,mass);
+            bodies[i] = new Body(positionVector, velocityVector, mass);
         }
     }
 
 
     /**
      * Creates a number of bodies with random values
+     *
      * @param numberOfBodies is the number of random bodies
      */
-    Simulation (int numberOfBodies){
+    Creation(int numberOfBodies) {
 
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
 
-        for (int i = 0; i<numberOfBodies; i++) {
+        for (int i = 0; i < numberOfBodies; i++) {
 
             /* generate random x and y position coordinates */
             double px = ThreadLocalRandom.current().nextInt(10, 100 + 1);
@@ -77,6 +78,7 @@ public class Simulation {
 
     /**
      * Getter that returns the bodies we created
+     *
      * @return
      */
     public Body[] getBodies() {
