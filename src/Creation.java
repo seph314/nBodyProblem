@@ -49,19 +49,25 @@ public class Creation {
     Creation(int numberOfBodies) {
 
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
+        int m = 0;
+        int p = 0;
+        int v = 0;
 
         for (int i = 0; i < numberOfBodies; i++) {
+            m += 200;
+            p += 10;
+            v += 10;
 
             /* generate random x and y position coordinates */
-            double px = ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double py = ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double px = 10 + p;//ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double py = 10 + p;//ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
             /* generate random x and y velocity coordinates */
-            double vx = ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double vy = ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double vx = 50 + v;//ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double vy = 50 + v;//ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
             /* generate random mass */
-            double mass = ThreadLocalRandom.current().nextInt(100, 1000 + 1);
+            double mass = 100 + m;//ThreadLocalRandom.current().nextInt(100, 1000 + 1);
 
             /* create position and velocity arrays */
             double[] postion = {px, py};
