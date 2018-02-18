@@ -30,7 +30,7 @@ public class Simulate {
         for (int i = 0; i < bodies.length; i++)
             for (int j = 0; j < bodies.length; j++) {
                 if (i != j)
-                    forces[i] = forces[i].add(bodies[j].calculateForces(bodies[i])); /* calculate an array of forces */
+                    forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
 
         for (int i = 0; i < bodies.length; i++) {
