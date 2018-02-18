@@ -4,7 +4,6 @@ public class Simulate {
 
     private Body[] bodies;
     private int dt;
-//    private PointsEx pointsEx;
 
     /**
      * Constructor
