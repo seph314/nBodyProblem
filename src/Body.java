@@ -48,6 +48,16 @@ public class Body {
         return velocity.coordinates;
     }
 
+    public double getXPosition(){
+        double[] array = position.coordinates;
+        return array[0];
+    }
+
+    public double getYPosition(){
+        double[] array = position.coordinates;
+        return array[1];
+    }
+
     public double getMass() {
         return mass;
     }
