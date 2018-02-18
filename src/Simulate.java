@@ -39,7 +39,7 @@ public class Simulate {
             System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
             System.out.println("mass: " + bodies[i].getMass());
         }
-        new Draw(bodies);
+        new Draw(bodies); /* graphical representation of bodies */
 
     }
 }
