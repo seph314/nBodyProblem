@@ -34,7 +34,7 @@ class Draw extends JFrame {
 
             /* draw all bodies */
             for (Body body : bodies) {
-                graphics2D.fill(new Arc2D.Double(body.getXPosition(), body.getYPosition(), 50, 50, 360, 360, Arc2D.OPEN));
+                graphics2D.fill(new Arc2D.Double(body.getXPosition(), body.getYPosition(), body.getMass()/10, body.getMass()/10, 360, 360, Arc2D.OPEN));
             }
         }
     }

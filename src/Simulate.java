@@ -38,9 +38,8 @@ public class Simulate {
             System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
             System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
             System.out.println("mass: " + bodies[i].getMass());
-            new Draw(bodies);
-
-//            pointsEx = new PointsEx(bodies); /* try to draw it graphically */
         }
+        new Draw(bodies);
+
     }
 }
