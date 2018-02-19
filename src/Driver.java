@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Driver {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Body[] bodies;
         int dt = 2;

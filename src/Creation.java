@@ -20,7 +20,7 @@ public class Creation {
         int v = 0;
 
         for (int i = 0; i < numberOfBodies; i++) {
-            m += 200;
+            m += 40;
             p += 10;
             v += 10;
 

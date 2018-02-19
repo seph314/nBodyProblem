@@ -6,6 +6,7 @@ import java.awt.geom.Arc2D;
 class Draw extends JFrame {
 
     private Body[] bodies;
+    private DrawBody drawBody = new DrawBody();
 
     /**
      * Constructor
@@ -15,8 +16,18 @@ class Draw extends JFrame {
         this.setSize(800,600); /* size of window */
         this.setTitle("Graphics simulation"); /* name of window */
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); /* exit on close */
+        this.add(/*new DrawBody()*/drawBody, BorderLayout.CENTER);
+        this.setVisible(true); /* shows window */
+    }
+
+    public void setBodies(Body[] bodies) {
+        this.bodies = bodies;
+    }
+
+    public void keepDrawing(){
         this.add(new DrawBody(), BorderLayout.CENTER);
         this.setVisible(true); /* shows window */
+
     }
 
     /**

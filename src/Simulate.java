@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.Arrays;
 
 public class Simulate {
@@ -19,7 +20,9 @@ public class Simulate {
     /**
      * Simulates what happens to the bodies over time
      */
-    public void time() {
+    public void time() throws InterruptedException {
+
+        Draw draw = new Draw(bodies);
 
         Vector[] forces = new Vector[bodies.length]; /* a new force array with the length of tge bodies array */
         for (int i = 0; i < bodies.length; i++) {
@@ -32,13 +35,20 @@ public class Simulate {
                     forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
 
-        for (int i = 0; i < bodies.length; i++) {
-            bodies[i].movePoints(forces[i], dt); /* move all points */
-            System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
-            System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
-            System.out.println("mass: " + bodies[i].getMass());
-        }
-        new Draw(bodies); /* graphical representation of bodies */
+            while (true){
+                draw.setBodies(bodies);
+                draw.keepDrawing();
+                Thread.sleep(1000);
+//                new Draw(bodies);
+                for (int i = 0; i<bodies.length; i++) {
+                    bodies[i].movePoints(forces[i], dt); /* move all points */
+                    System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
+                    System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
+                    System.out.println("mass: " + bodies[i].getMass());
+                }
+            }
+
+//        new Draw(bodies); /* graphical representation of bodies */
 
     }
 }
