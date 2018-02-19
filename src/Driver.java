@@ -6,7 +6,7 @@ public class Driver {
 
         Body[] bodies;
         int dt = 2;
-        int numberOfBodies = 4;
+        int numberOfBodies = 40;
 
         System.out.println("N-body problem");
         Creation creation = new Creation(numberOfBodies); /* creates random sized bodies via the Creation constructor */
