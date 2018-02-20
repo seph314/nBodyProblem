@@ -33,7 +33,7 @@ public class Creation {
             double vy = /*50 + v;*/ ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
             /* generate random mass */
-            double mass = /*100 + m;*/ ThreadLocalRandom.current().nextInt(100, 1000 + 1);
+            double mass = /*100 + m;*/ ThreadLocalRandom.current().nextInt(1000, 20000 + 1);
 
             /* create position and velocity arrays */
             double[] postion = {px, py};

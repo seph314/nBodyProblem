@@ -38,7 +38,6 @@ public class Simulate {
             while (true){
                 draw.setBodies(bodies);
                 draw.keepDrawing();
-                Thread.sleep(1000);
 //                new Draw(bodies);
                 for (int i = 0; i<bodies.length; i++) {
                     bodies[i].movePoints(forces[i], dt); /* move all points */
