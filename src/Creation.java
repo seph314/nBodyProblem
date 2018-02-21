@@ -20,20 +20,20 @@ public class Creation {
         int v = 0;
 
         for (int i = 0; i < numberOfBodies; i++) {
-            m += 40;
+            m += 200;
             p += 10;
             v += 10;
 
             /* generate random x and y position coordinates */
-            double px = /*10 + p;*/ ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double py = /*10 + p;*/ ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double px = 10 + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double py = 10 + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
             /* generate random x and y velocity coordinates */
-            double vx = /*50 + v;*/ ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double vy = /*50 + v;*/ ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double vx = 50 + v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double vy = 50 + v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
             /* generate random mass */
-            double mass = /*100 + m;*/ ThreadLocalRandom.current().nextInt(1000, 20000 + 1);
+            double mass = 100 + m;// ThreadLocalRandom.current().nextInt(1000, 20000 + 1);
 
             /* create position and velocity arrays */
             double[] postion = {px, py};
