@@ -31,50 +31,95 @@
  * * * * * * * * * * * * * * * * * */
 
 
-
 /**
  * Representation of a QuadTree
  */
 public class QuadTree {
 
-    /* we can choose any number we like as our node capacity,
-     * this value tells us how many elements can be stores in tis quad tree node */
-    private int nodeCapacity = 5;
-
     /* a region that a tree represents */
     private Quad quad;
 
-    /* a body  */
-    Body body = null;
+    /* a bodyRepresentation */
+    private Body bodyRepresentation;
 
     /* child quadrants */
-    QuadTree topLeft;
-    QuadTree topRight;
-    QuadTree bottomLeft;
-    QuadTree bottomRight;
+    private QuadTree northWest;
+    private QuadTree northEast;
+    private QuadTree southWest;
+    private QuadTree southEast;
+
 
     /**
-     * Constructor
-     * @param quad is a a region that a tree represents
+     * QuadTree Constructor
+     * Creates a QuadTree
+     *
+     * @param quad
      */
-    QuadTree (Quad quad){
+    QuadTree(Quad quad) {
         this.quad = quad;
+        this.bodyRepresentation = null;
+        this.northWest = null;
+        this.northEast = null;
+        this.southWest = null;
+        this.southEast = null;
     }
-
-//    public void buildQuadTree(Body[] bodies){
-//        this.bodies = bodies;
-//        for (Body body : bodies){
-//            insert(body);
-//        }
-//    }
 
     /**
-     * Insert a body if there currently is none
-     * @param body
+     * Insert bodyRepresentation in tree
+     *
+     * @param body is the bodyRepresentation we want to insert
      */
-    public void insert(Body body){
-        if (this.body == null)
-            this.body = body;
+    public void build(Body body) {
+
+        /* if this node doesn't contain a bodyRepresentation, insert the new bodyRepresentation here*/
+        if (this.bodyRepresentation == null)
+            this.bodyRepresentation = body;
+
+        /* if internal nodes */
+        if (!external()) {
+            bodyRepresentation = bodyRepresentation.add(body); /* aggregate the body if it's internal */
+            insert(body);
+        } else {
+            /* add four new Child nodes to this node */
+            northWest = new QuadTree(quad.northWest());
+            northEast = new QuadTree(quad.northEast());
+            southWest = new QuadTree(quad.southWest());
+            southEast = new QuadTree(quad.southEast());
+
+            /* insert bodies */
+            insert(bodyRepresentation);
+            insert(body);
+
+            /* aggregate bodyRepresentation */
+            bodyRepresentation = bodyRepresentation.add(body);
+        }
     }
 
+    /**
+     * A node is defined as external if it has no children
+     *
+     * @return true if external
+     */
+    private boolean external() {
+        return northWest == null
+                && northEast == null
+                && southWest == null
+                && southEast == null;
+    }
+
+    /**
+     * Inserts the body into the right Quadrant
+     *
+     * @param body is the body that we want to insert
+     */
+    private void insert(Body body) {
+        if (body.inQuad(quad.northWest()))
+            northWest.insert(body);
+        if (body.inQuad(quad.northEast()))
+            northEast.insert(body);
+        if (body.inQuad(quad.southWest()))
+            southWest.insert(body);
+        if (body.inQuad(quad.southEast()))
+            southEast.insert(body);
+    }
 }

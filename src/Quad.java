@@ -14,8 +14,7 @@
  * *    Best case should be one core for each node.
  * *
  * *    Definitions:
- * *    Leaf
- * *    (less commonly called External node)
+ * *    External node (Leaf)
  * *    A node with no children
  * *
  * *    Internal node
@@ -37,7 +36,7 @@ public class Quad {
 
     /* center and dimension */
     private Vector center;
-    private double halfDimension;
+    private double length;
 
     /* min and max X and Y values */
     private double minX;
@@ -49,17 +48,17 @@ public class Quad {
 
     /**
      * Constructor
-     *
-     * @param center        is the center of this Quadrant represented by a vector with x and y coordinates
-     * @param halfDimension is the length of this Quadrant
+     * @param center is the center of this Quadrant represented by a vector with x and y coordinates
+     * @param length is half the length of this Quadrant
      */
-    public Quad(Vector center, double halfDimension) {
-        this.minX = center.getX() - halfDimension;
-        this.maxX = center.getX() + halfDimension;
-        this.minY = center.getY() - halfDimension;
-        this.maxY = center.getY() + halfDimension;
+    public Quad(Vector center, double length) {
+        double halfLength = length/2;
+        this.minX = center.getX() - halfLength;
+        this.maxX = center.getX() + halfLength;
+        this.minY = center.getY() - halfLength;
+        this.maxY = center.getY() + halfLength;
 
-        this.halfDimension = halfDimension;
+        this.length = length;
         this.center = center;
     }
 
@@ -76,16 +75,46 @@ public class Quad {
     }
 
     /**
-     * Splits a Quad into a smaller quad which is 1/4th the size of the original
-     * @return a new quad that is 1/4th of the original
+     * @return the new top left quadrant of this quad
      */
-    private Quad subDivde() {
-        double[] newCenter = {center.getX()/4, center.getY()/4};
-        return new Quad(new Vector(newCenter), halfDimension / 2);
+    public Quad northWest(){
+        double newX = center.getX() - length/4;
+        double newY = center.getY() + length/4;
+        double newLength = length/2;
+        double[] newCenter = {newX,newY};
+        return new Quad(new Vector(newCenter), newLength);
     }
 
-    public Quad topLeft(){
-        return subDivde();
+    /**
+     * @return the new top right quadrant of this quad
+     */
+    public Quad northEast(){
+        double newX = center.getX() + length/4;
+        double newY = center.getY() + length/4;
+        double newLength = length/2;
+        double[] newCenter = {newX,newY};
+        return new Quad(new Vector(newCenter), newLength);
     }
-    
+
+    /**
+     * @return the new top right quadrant of this quad
+     */
+    public Quad southWest(){
+        double newX = center.getX() - length/4;
+        double newY = center.getY() - length/4;
+        double newLength = length/2;
+        double[] newCenter = {newX,newY};
+        return new Quad(new Vector(newCenter), newLength);
+    }
+
+    /**
+     * @return the new top right quadrant of this quad
+     */
+    public Quad southEast(){
+        double newX = center.getX() + length/4;
+        double newY = center.getY() - length/4;
+        double newLength = length/2;
+        double[] newCenter = {newX,newY};
+        return new Quad(new Vector(newCenter), newLength);
+    }
 }
