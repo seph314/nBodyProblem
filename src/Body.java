@@ -61,4 +61,13 @@ public class Body {
     public double getMass() {
         return mass;
     }
+
+    /**
+     * Tells us if a body is in a Quadrant or not
+     * @param quad is the quadrant we are looking in
+     * @return true if the body is there
+     */
+    public boolean inQuad(Quad quad){
+        return quad.containsBody(this);
+    }
 }

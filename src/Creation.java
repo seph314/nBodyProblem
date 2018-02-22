@@ -14,7 +14,7 @@ public class Creation {
      */
     Creation(int numberOfBodies) {
 
-        bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
+        bodies = new Body[numberOfBodies + 1]; /* set the body array tp the right size */
         int m = 0;
         int p = 0;
         int v = 0;
@@ -46,6 +46,22 @@ public class Creation {
             /* add a new body to bodies */
             bodies[i] = new Body(positionVector, velocityVector, mass);
         }
+
+
+        /* generate random mass */
+        double mass = 1000000;
+
+        /* create position and velocity arrays */
+        double[] postion = {50, 50};
+        double[] velocity = {0, 0};
+
+        /* create position and velocity vectors */
+        Vector positionVector = new Vector(postion);
+        Vector velocityVector = new Vector(velocity);
+
+        bodies[numberOfBodies] = new Body(positionVector, velocityVector, mass);
+
+
     }
 
     /**
