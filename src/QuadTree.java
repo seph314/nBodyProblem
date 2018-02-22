@@ -1,20 +1,36 @@
-/*
- * The Barnes-Hut algorithm assumes that the force from distant enough particles,
- * can be approximated with acceptable losses to accuracy by using their center mass and total mass.
- * This can reduce or runtime to n log(n).
- *
- * We will use a quad tree (2D) structure to store the points/bodies in.
- *
- * We will continue to divide into quadrants until there is only one particle in a leaf-node.
- *
- * With this Quad-tree we can calculate the total mass and it's center for each "box".
- * Traverse the tree for each particle to calculate the force. This parts is done in parallel with multiple threads.
- * Best case should be one core for each node.
- *
- * ,,,,,,,,,,,,,,,,,,,
- * B A R N E S - H U T
- * ```````````````````
- */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * *
+ * *    The Barnes-Hut algorithm assumes that the force from distant enough particles,
+ * *    can be approximated with acceptable losses to accuracy by using their center mass and total mass.
+ * *    This can reduce or runtime to n log(n).
+ * *
+ * *    We will use a quad tree (2D) structure to store the points/bodies in.
+ * *
+ * *    We will continue to divide into quadrants until there is only one particle in a leaf-node.
+ * *
+ * *    With this Quad-tree we can calculate the total mass and it's center for each "box".
+ * *    Traverse the tree for each particle to calculate the force. This parts is done in parallel with multiple threads.
+ * *    Best case should be one core for each node.
+ * *
+ * *    Definitions:
+ * *    Leaf
+ * *    (less commonly called External node)
+ * *    A node with no children
+ * *
+ * *    Internal node
+ * *    A node with at least one child.
+ * *
+ * *    Each internal node represents a quadrant in space and can have up to four children
+ * *    Each leaf/external node represents a point in space (or is empty)
+ * *
+ * * * * * * * * * * * * * * * * * * * *
+ * *                                * *
+ * *     B A R N E S - H U T       * *
+ * *                              * *
+ * * * * * * * * * * * * * * * * * */
+
+
 
 /**
  * Representation of a QuadTree
@@ -32,10 +48,10 @@ public class QuadTree {
     Body body = null;
 
     /* child quadrants */
-    QuadTree northWest;
-    QuadTree northEast;
-    QuadTree southWest;
-    QuadTree southEast;
+    QuadTree topLeft;
+    QuadTree topRight;
+    QuadTree bottomLeft;
+    QuadTree bottomRight;
 
     /**
      * Constructor
