@@ -1,4 +1,4 @@
-public class InitiateBarnesHutSeq {
+public class SimulateBarnesHutSeq {
 
     public void buildQuadTree(Body[] bodies){
 
