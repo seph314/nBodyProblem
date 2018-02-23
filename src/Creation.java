@@ -14,7 +14,7 @@ public class Creation {
      */
     Creation(int numberOfBodies) {
 
-        bodies = new Body[numberOfBodies + 1]; /* set the body array tp the right size */
+        bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
         int m = 0;
         int p = 0;
         int v = 0;
@@ -59,7 +59,7 @@ public class Creation {
         Vector positionVector = new Vector(postion);
         Vector velocityVector = new Vector(velocity);
 
-        bodies[numberOfBodies] = new Body(positionVector, velocityVector, mass);
+       // bodies[numberOfBodies] = new Body(positionVector, velocityVector, mass);
 
 
     }

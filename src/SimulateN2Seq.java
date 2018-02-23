@@ -3,10 +3,8 @@ import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-public class Simulate {
+public class SimulateN2Seq {
 
-    int workers;
-    CyclicBarrier barrier;
     Body[] bodies;
     int numberOfBodies;
     int dt;
@@ -18,9 +16,7 @@ public class Simulate {
      * @param bodies is our array of bodies
      * @param dt     is the increase in time
      */
-    public Simulate(int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector[] forces) {
-        this.workers = workers;
-        this.barrier = barrier;
+    public SimulateN2Seq(Body[] bodies, int numberOfBodies, int dt, Vector[] forces) {
         this.bodies = bodies;
         this.numberOfBodies = numberOfBodies;
         this.dt = dt;
@@ -30,7 +26,7 @@ public class Simulate {
     /**
      * Simulates what happens to the bodies over time
      */
-    public void time(int w) throws InterruptedException {
+    public void time() throws InterruptedException {
 
         //Draw draw = new Draw(bodies);
 
@@ -38,24 +34,18 @@ public class Simulate {
         for (int i = 0; i < bodies.length; i++) {
             forces[i] = new Vector(new double[2]);
         }*/
-        for (int i = w; i < (w+(bodies.length/workers)); i++)
-            for (int j = 0; j < bodies.length; j++) {
+        for (int i = 0; i < numberOfBodies; i++)
+            for (int j = 0; j < numberOfBodies; j++) {
                 if (i != j)
                     forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
 
-            //Awaits all threads to finish force calculations before moving bodies.
-        try {
-            barrier.await();
-        } catch (BrokenBarrierException e) {
-            e.printStackTrace();
-        }
 
         // while (true){
-                //draw.setBodies(bodies);
-                //draw.keepDrawing();
+        //draw.setBodies(bodies);
+        //draw.keepDrawing();
 //                new Draw(bodies);
-        for (int i = w; i<(w+(bodies.length/workers)); i++) {
+        for (int i = 0; i< numberOfBodies; i++) {
             bodies[i].movePoints(forces[i], dt); /* move all points */
         }
 
@@ -65,7 +55,7 @@ public class Simulate {
                     System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
                     System.out.println("mass: " + bodies[i].getMass());
                 }*/
-            //}
+        //}
 
 //        new Draw(bodies); /* graphical representation of bodies */
 

@@ -5,23 +5,27 @@ public class Worker extends Thread{
     int workers;
     CyclicBarrier barrier;
     Body[] bodies;
+    int numberOfBodies;
     int dt;
     Vector forces[];
+    Simulate simulation;
 
-    public Worker(int w, int workers, CyclicBarrier barrier, Body[] bodies, int dt, Vector forces[]) {
+    public Worker(int w, int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector forces[], Simulate simulation) {
         this.w = w;
         this.workers = workers;
         this.barrier = barrier;
         this.bodies = bodies;
+        this.numberOfBodies = numberOfBodies;
         this.dt = dt;
         this.forces = forces;
+        this.simulation = simulation;
+
     }
 
     public void run() {
-        Simulate simulation = new Simulate(bodies, dt);
         System.out.println(Thread.currentThread());
         try {
-            simulation.time(w, workers, barrier, forces);
+            simulation.time(w);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
