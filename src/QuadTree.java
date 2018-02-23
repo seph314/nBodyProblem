@@ -116,13 +116,13 @@ public class QuadTree {
      */
     private void insert(Body body) {
         if (body.inQuad(quad.northWest()))
-            northWest.insert(body);
+            northWest.build(body);
         if (body.inQuad(quad.northEast()))
-            northEast.insert(body);
+            northEast.build(body);
         if (body.inQuad(quad.southWest()))
-            southWest.insert(body);
+            southWest.build(body);
         if (body.inQuad(quad.southEast()))
-            southEast.insert(body);
+            southEast.build(body);
     }
 
     /**
@@ -142,17 +142,15 @@ public class QuadTree {
      */
     public Vector calculateForce(Body body) {
         /* TODO must force be initated to awoid nullPonterExceptions? */
-        double[] array = {1,1};
-        Vector force = new Vector(array);
 
         /* if the node is external we calculates the forces the aggregated bodies applies on this body
         * bodies do not apply forces on them selves ans not from null */
         if (external() && !body.equals(aggregatedBodies)){
-            force = body.calculateForces(aggregatedBodies);
+            return body.calculateForces(aggregatedBodies);
         }
         else { /* when the node is internal */
-            if (quad.getLength()/aggregatedBodies.calculateDistance(body) > theta) { /* if this is true then the body is far away*/
-                force =  body.calculateForces(aggregatedBodies);
+            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta) { /* if this is true then the body is far away*/
+                return body.calculateForces(aggregatedBodies);
             }else {
                 northWest.calculateForce(body);
                 northEast.calculateForce(body);
@@ -160,7 +158,7 @@ public class QuadTree {
                 southEast.calculateForce(body);
             }
         }
-        return force;
+        return new Vector(new double[] {1,1});
     }
 }
 

@@ -10,10 +10,9 @@ public class InitiateBarnesHutSeq {
 
     public void buildQuadTree(Vector[] forces) {
 
-        double sizeOfTheUniverse = 500;
-        double[] startCoordinates = {0, 0};
+        double sizeOfTheUniverse = 5000;
+        double[] startCoordinates = {50, 50};
         Vector startVector = new Vector(startCoordinates);
-        double theta = 0.5;
 
         /* create new Quad */
         /* TODO what size shoule "sizeOfTheUniverse" be? */
@@ -21,6 +20,8 @@ public class InitiateBarnesHutSeq {
 
         /* empty QuadTree */
         QuadTree quadTree = new QuadTree(quad);
+
+        System.out.println("Bodies length " + bodies.length + " " + bodies[0].getXPosition());
 
         /* build tree */
         for (Body body : bodies) {
@@ -31,17 +32,17 @@ public class InitiateBarnesHutSeq {
 
         /* calculate forces */
 
-//        for (int i = 0; i < bodies.length; i++) {
-//            forces[i] = forces[i].add(quadTree.calculateForce(bodies[i])); /* calculate an array of forces */
-//        }
-//
-//        for (int i = 0; i < bodies.length; i++) {
-//            bodies[i].movePoints(forces[i], dt); /* move all points */
-//        }
-
-        for (Body body : bodies){
-            body.movePoints(quadTree.calculateForce(body), dt);
+        for (int i = 0; i < bodies.length; i++) {
+            forces[i] = forces[i].add(quadTree.calculateForce(bodies[i])); /* calculate an array of forces */
         }
+
+        for (int i = 0; i < bodies.length; i++) {
+            bodies[i].movePoints(forces[i], dt); /* move all points */
+        }
+
+//        for (Body body : bodies){
+//            body.movePoints(quadTree.calculateForce(body), dt);
+//        }
     }
 }
 
