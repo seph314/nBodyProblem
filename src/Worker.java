@@ -8,9 +8,9 @@ public class Worker extends Thread{
     int numberOfBodies;
     int dt;
     Vector forces[];
-    Simulate simulation;
+    SimulateN2Parallel simulation;
 
-    public Worker(int w, int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector forces[], Simulate simulation) {
+    public Worker(int w, int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector forces[], SimulateN2Parallel simulation) {
         this.w = w;
         this.workers = workers;
         this.barrier = barrier;
@@ -23,7 +23,6 @@ public class Worker extends Thread{
     }
 
     public void run() {
-        System.out.println(Thread.currentThread());
         try {
             simulation.time(w);
         } catch (InterruptedException e) {
