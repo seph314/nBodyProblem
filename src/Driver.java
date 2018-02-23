@@ -54,7 +54,6 @@ public class Driver {
             System.out.println("mass: " + bodies[i].getMass());
         }
         System.out.println(t3/10000000);
-        System.out.println((float)t6/10000000);
         new Draw(bodies);
 
 
