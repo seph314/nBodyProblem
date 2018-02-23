@@ -36,6 +36,8 @@ public class Simulate {
                 if (i != j)
                     forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
+
+            //Awaits all threads to finish force calculations before moving bodies.
         try {
             barrier.await();
         } catch (BrokenBarrierException e) {
@@ -46,9 +48,9 @@ public class Simulate {
                 //draw.setBodies(bodies);
                 //draw.keepDrawing();
 //                new Draw(bodies);
-                for (int i = w; i<(w+(bodies.length/workers)); i++) {
-                    bodies[i].movePoints(forces[i], dt); /* move all points */
-                }
+        for (int i = w; i<(w+(bodies.length/workers)); i++) {
+            bodies[i].movePoints(forces[i], dt); /* move all points */
+        }
 
                 /*for (int i = w; i<(w+(bodies.length/workers)); i++) {
                     System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));

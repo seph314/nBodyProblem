@@ -7,8 +7,8 @@ public class Driver {
 
         Body[] bodies;
         int dt = 2;
-        int numberOfBodies = 4000;
-        int workers = 4;
+        int numberOfBodies = 5000;
+        int workers = 1;
         CyclicBarrier barrier = new CyclicBarrier(workers);
 
         System.out.println("N-body problem");
@@ -54,6 +54,8 @@ public class Driver {
             System.out.println("mass: " + bodies[i].getMass());
         }
         System.out.println(t3/10000000);
+        System.out.println((float)t6/10000000);
+        new Draw(bodies);
 
 
 
