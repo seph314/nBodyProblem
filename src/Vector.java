@@ -10,9 +10,7 @@ public class Vector {
     Vector(double[] input) {
         vectorLength = input.length;
         coordinates = new double[input.length];
-        for (int i = 0; i < input.length; i++) {
-            coordinates[i] = input[i];
-        }
+        System.arraycopy(input, 0, coordinates, 0, input.length);
     }
 
     /**

@@ -61,4 +61,27 @@ public class Body {
     public double getMass() {
         return mass;
     }
+
+    /**
+     * Tells us if a body is in a Quadrant or not
+     * @param quad is the quadrant we are looking in
+     * @return true if the body is there
+     */
+    public boolean inQuad(Quad quad){
+        return quad.containsBody(this);
+    }
+
+    /**
+     * Adds two bodies together
+     * to be able to calculate the representation of multiple bodies in the QuadTree
+     * @param body is the body we want to add
+     * @return the aggregated body
+     */
+    public Body add(Body body){
+        Vector position = this.position.add(body.position);
+        Vector velocity = this.velocity.add(body.velocity);
+        double mass = this.mass + body.mass;
+
+        return new Body(position, velocity, mass);
+    }
 }
