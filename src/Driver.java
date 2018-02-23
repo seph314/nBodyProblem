@@ -69,7 +69,7 @@ public class Driver {
         /* Sequential Barnes Hut program */
         else if(program == 3){
             t1 = System.nanoTime();
-            InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq();
+            //InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq();
             //inBHS.initiate();
             t2 = System.nanoTime();
             t3 = t2-t1;
