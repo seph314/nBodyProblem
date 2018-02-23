@@ -35,8 +35,8 @@ public class SimulateN2Parallel {
     public void time(int w) throws InterruptedException {
         for(int step = 0; step < numSteps; step++){
 
-            for (int i = w; i < (w+(bodies.length/workers)); i++)
-                for (int j = 0; j < bodies.length; j++) {
+            for (int i = w; i < (w+(numberOfBodies/workers)); i++)
+                for (int j = 0; j < numberOfBodies; j++) {
                     if (i != j)
                         forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
                 }
@@ -52,7 +52,7 @@ public class SimulateN2Parallel {
                     //draw.setBodies(bodies);
                     //draw.keepDrawing();
                 //new Draw(bodies);
-            for (int i = w; i<(w+(bodies.length/workers)); i++) {
+            for (int i = w; i<(w+(numberOfBodies/workers)); i++) {
                 bodies[i].movePoints(forces[i], dt); /* move all points */
             }
 
