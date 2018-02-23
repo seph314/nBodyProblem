@@ -31,13 +31,24 @@ public class Body {
     }
 
     /**
-     * calculate total force for every pair of bodies
+     * calculate total force for two pair of bodies
      */
     public Vector calculateForces(Body otherBody){
         Vector delta = otherBody.position.subtract(this.position);
         double distance = delta.magnitude();
         double force = (G * this.mass * otherBody.mass) / (distance*distance); // Newtons law of Gravity F = G * m1 * m2 / r 2
         return delta.direction().scalarProduct(force);
+    }
+
+    /**
+     * Calculates distance between two bodies
+     * @param body is the other body
+     * @return distance
+     */
+    public double calculateDistance(Body body){
+        double dx = this.position.getX() - body.position.getX();
+        double dy = this.position.getY() - body.position.getY();
+        return Math.sqrt(dx*dx + dy*dy);
     }
 
     public double[] getPosition() {
@@ -74,10 +85,10 @@ public class Body {
     /**
      * Adds two bodies together
      * to be able to calculate the representation of multiple bodies in the QuadTree
-     * @param body is the body we want to add
+     * @param body is the body we want to aggregate
      * @return the aggregated body
      */
-    public Body add(Body body){
+    public Body aggregate(Body body){
         Vector position = this.position.add(body.position);
         Vector velocity = this.velocity.add(body.velocity);
         double mass = this.mass + body.mass;

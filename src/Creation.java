@@ -43,7 +43,7 @@ public class Creation {
             Vector positionVector = new Vector(postion);
             Vector velocityVector = new Vector(velocity);
 
-            /* add a new body to bodies */
+            /* aggregate a new body to bodies */
             bodies[i] = new Body(positionVector, velocityVector, mass);
         }
 
@@ -109,7 +109,7 @@ public class Creation {
             /* create position and velocity vectors */
             Vector positionVector = new Vector(postion);
             Vector velocityVector = new Vector(velocity);
-            /* add a new body to bodies */
+            /* aggregate a new body to bodies */
             bodies[i] = new Body(positionVector, velocityVector, mass);
         }
     }

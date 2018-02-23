@@ -62,6 +62,10 @@ public class Quad {
         this.center = center;
     }
 
+    public double getLength() {
+        return length;
+    }
+
     /**
      * Checks if Quadrant contains Body
      * @param body the body we are looking at

@@ -50,7 +50,7 @@ public class Vector {
     }
 
     /**
-     * Calculates the add of two vectors
+     * Calculates the aggregate of two vectors
      * @param argumentVector
      * @return
      */

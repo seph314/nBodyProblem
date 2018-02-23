@@ -39,8 +39,8 @@ public class QuadTree {
     /* a region that a tree represents */
     private Quad quad;
 
-    /* a bodyRepresentation */
-    private Body bodyRepresentation;
+    /* a aggregatedBodies */
+    private Body aggregatedBodies;
 
     /* child quadrants */
     private QuadTree northWest;
@@ -48,6 +48,8 @@ public class QuadTree {
     private QuadTree southWest;
     private QuadTree southEast;
 
+    /* theta */
+    private double theta = 0.5;
 
     /**
      * QuadTree Constructor
@@ -57,7 +59,7 @@ public class QuadTree {
      */
     QuadTree(Quad quad) {
         this.quad = quad;
-        this.bodyRepresentation = null;
+        this.aggregatedBodies = null;
         this.northWest = null;
         this.northEast = null;
         this.southWest = null;
@@ -65,33 +67,33 @@ public class QuadTree {
     }
 
     /**
-     * Insert bodyRepresentation in tree
+     * Insert aggregatedBodies in tree
      *
-     * @param body is the bodyRepresentation we want to insert
+     * @param body is the aggregatedBodies we want to insert
      */
     public void build(Body body) {
 
-        /* if this node doesn't contain a bodyRepresentation, insert the new bodyRepresentation here*/
-        if (this.bodyRepresentation == null)
-            this.bodyRepresentation = body;
+        /* if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here*/
+        if (this.aggregatedBodies == null)
+            this.aggregatedBodies = body;
 
         /* if internal nodes */
         if (!external()) {
-            bodyRepresentation = bodyRepresentation.add(body); /* aggregate the body if it's internal */
+            aggregatedBodies = aggregatedBodies.aggregate(body); /* aggregate the body if it's internal */
             insert(body);
         } else {
-            /* add four new Child nodes to this node */
+            /* aggregate four new Child nodes to this node */
             northWest = new QuadTree(quad.northWest());
             northEast = new QuadTree(quad.northEast());
             southWest = new QuadTree(quad.southWest());
             southEast = new QuadTree(quad.southEast());
 
             /* insert bodies */
-            insert(bodyRepresentation);
+            insert(aggregatedBodies);
             insert(body);
 
-            /* aggregate bodyRepresentation */
-            bodyRepresentation = bodyRepresentation.add(body);
+            /* aggregate aggregatedBodies */
+            aggregatedBodies = aggregatedBodies.aggregate(body);
         }
     }
 
@@ -121,6 +123,44 @@ public class QuadTree {
             southWest.insert(body);
         if (body.inQuad(quad.southEast()))
             southEast.insert(body);
+    }
+
+    /**
+     * Calculates the combined force the bodies in a QuadTree applies on a body
+     *
+     * If the mass of an internal node is far away we treat the bodies in that part
+     * of the tree as a single body
+     *
+     * If the body is rather close, we calculate the force and check the children the same way
+     *
+     * We calculate if a body is close enough by the ratio of the with of the internal nodes region
+     * and the distance of the body and the nodes mass center.
+     *
+     * This value is called Theta. Large Theta increases speed and smaller Theta accuracy.
+     * (If Theta is 0, then no internal node is treated as a single body)
+     *
+     */
+    public Vector calculateForce(Body body) {
+        /* TODO must force be initated to awoid nullPonterExceptions? */
+        double[] array = {1,1};
+        Vector force = new Vector(array);
+
+        /* if the node is external we calculates the forces the aggregated bodies applies on this body
+        * bodies do not apply forces on them selves ans not from null */
+        if (external() && !body.equals(aggregatedBodies)){
+            force = body.calculateForces(aggregatedBodies);
+        }
+        else { /* when the node is internal */
+            if (quad.getLength()/aggregatedBodies.calculateDistance(body) > theta) { /* if this is true then the body is far away*/
+                force =  body.calculateForces(aggregatedBodies);
+            }else {
+                northWest.calculateForce(body);
+                northEast.calculateForce(body);
+                southWest.calculateForce(body);
+                southEast.calculateForce(body);
+            }
+        }
+        return force;
     }
 }
 
