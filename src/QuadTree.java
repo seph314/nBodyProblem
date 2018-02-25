@@ -49,7 +49,7 @@ public class QuadTree {
     private QuadTree southEast;
 
     /* theta */
-    private double theta = 0.5;
+    private double theta = 0.0;
 
     /**
      * QuadTree Constructor
@@ -74,15 +74,16 @@ public class QuadTree {
     public void build(Body body) {
 
         /* if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here*/
-        if (this.aggregatedBodies == null)
+        if (this.aggregatedBodies == null){
             this.aggregatedBodies = body;
+        }
 
         /* if internal nodes */
         else if (!external()) {
             aggregatedBodies = aggregatedBodies.aggregate(body); /* aggregate the body if it's internal */
             insert(body);
         }
-        else if(external()){
+        else if (external()){
             /* aggregate four new Child nodes to this node */
             /*northWest = new QuadTree(quad.northWest());
             northEast = new QuadTree(quad.northEast());
@@ -91,10 +92,10 @@ public class QuadTree {
 
             /* insert bodies */
             insert(aggregatedBodies);
-            build(body);
+            insert(body);
 
             /* aggregate aggregatedBodies */
-            //aggregatedBodies = aggregatedBodies.aggregate(body);
+           // aggregatedBodies = aggregatedBodies.aggregate(body);
         }
     }
 
@@ -145,29 +146,32 @@ public class QuadTree {
      * (If Theta is 0, then no internal node is treated as a single body)
      *
      */
-    public Vector calculateForce(Body body) {
+    public void calculateForce(Body body) {
         /* TODO must force be initated to awoid nullPonterExceptions? */
 
         /* if the node is external we calculates the forces the aggregated bodies applies on this body
         * bodies do not apply forces on them selves ans not from null */
-        if (external()){
-            if (body != aggregatedBodies)
-                return body.calculateForces(aggregatedBodies);
-        }
-        else if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { /* if this is true then the body is far away*/
-                return body.calculateForces(aggregatedBodies);
+        if (body == null || body.equals(aggregatedBodies))
+            return;
+
+        if (external())
+        body.addForce(aggregatedBodies);
+
+        else{
+            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { /* if this is true then the body is far away*/
+                    body.addForce(aggregatedBodies);
+                }
+            else {
+                if(northWest != null)
+                    northWest.calculateForce(body);
+                if(northEast != null)
+                    northEast.calculateForce(body);
+                if(southWest != null)
+                    southWest.calculateForce(body);
+                if(southEast != null)
+                    southEast.calculateForce(body);
             }
-        else {
-            if(northWest != null)
-                northWest.calculateForce(body);
-            if(northEast != null)
-                northEast.calculateForce(body);
-            if(southWest != null)
-                southWest.calculateForce(body);
-            if(southEast != null)
-                southEast.calculateForce(body);
         }
-        return new Vector(new double[] {1,1});
     }
 }
 

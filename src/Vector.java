@@ -91,4 +91,7 @@ public class Vector {
         return coordinates[1];
     }
 
+    public void setCoordinates(double[] coordinates) {
+        this.coordinates = coordinates;
+    }
 }

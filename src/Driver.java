@@ -5,7 +5,7 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 8;
+        int gnumBodies = 200;
         int numSteps = 1;
         int far = 0;
         int numWorkers = 1;
@@ -16,7 +16,7 @@ public class Driver {
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 3;
+        int program = 1;
        // while(program != 0){
            /* System.out.println("\n****** N-body problem ****** \n");
 
@@ -127,7 +127,7 @@ public class Driver {
             System.out.println("numWorkers = " + numWorkers);
             System.out.println("The simulaiton took " + t3/1000000 + "ms");
 
-           // new Draw(bodies);
+            //new Draw(bodies);
 
 
 

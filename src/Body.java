@@ -4,6 +4,7 @@ public class Body {
     private Vector position;            /* position */
     private Vector velocity;            /* velocity */
     private double mass;                /* mass */
+    public double fx, fy;
     private final double G = 6.67e-11;  /* gravitational constant */
 
     /**
@@ -17,6 +18,38 @@ public class Body {
         this.velocity = velocity;
         this.mass = mass;
     }
+
+    public void resetForce() {
+        fx = 0;
+        fy = 0;
+    }
+
+    public void addForce(Body b) {
+        Body a = this;
+        double EPS = 3E4; // softening parameter
+        double dx = b.getXPosition() - a.getXPosition();
+        double dy = b.getYPosition() - a.getYPosition();
+        double dist = Math.sqrt(dx*dx + dy*dy);
+        double F = (G * a.mass * b.mass) / (dist*dist);// + EPS*EPS);
+        a.fx += F * dx / dist;
+        a.fy += F * dy / dist;
+    }
+
+    public void update(double dt) {
+        double[] v;
+        v = getVelocity();
+        v[0] += dt * fx / mass;
+        v[1] += dt * fy / mass;
+        this.velocity.setCoordinates(v);
+
+        double[] r;
+        r = getPosition();
+        r[0] += dt * v[0];
+        r[1] += dt * v[1];
+        this.position.setCoordinates(r);
+
+    }
+
 
     /**
      * Calculate new velocity and position for each body
@@ -91,12 +124,14 @@ public class Body {
      * @return the aggregated body
      */
     public Body aggregate(Body body){
-        Vector position = this.position.add(body.position);
-        Vector velocity = this.velocity.add(body.velocity);
+      //  Vector position = this.position.add(body.position);
+        //Vector velocity = this.velocity.add(body.velocity);
         double mass = this.mass + body.mass;
-        System.out.println("X = " + position.getX());
-        System.out.println("Y = " + position.getY());
+        double x[] = new double[2];
+        x[0] = ((body.getXPosition()*body.getMass() + this.getXPosition()*this.getMass()))/mass;
+        x[1] = (body.getYPosition()*body.getMass() + this.getXPosition()*this.getMass())/mass;
+        Vector newVector = new Vector(x);
 
-        return new Body(position, velocity, mass);
+        return new Body(newVector, velocity, mass);
     }
 }
