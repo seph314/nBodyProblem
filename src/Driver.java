@@ -5,11 +5,10 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 2000;
+        int gnumBodies = 8;
         int numSteps = 1;
         int far = 0;
-        int numWorkers = 8;
-
+        int numWorkers = 1;
 
 
         boolean firstrun = true;
@@ -17,9 +16,9 @@ public class Driver {
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 2;
-        while(program != 0){
-            System.out.println("\n****** N-body problem ****** \n");
+        int program = 3;
+       // while(program != 0){
+           /* System.out.println("\n****** N-body problem ****** \n");
 
             Scanner scanner = new Scanner(System.in);
 
@@ -50,7 +49,7 @@ public class Driver {
                 // Reads number of threads from user (Parallel only)
                 System.out.print("Input number of threads: ");
                 numWorkers = scanner.nextInt();
-            }
+            }*/
 
 
             Creation creation = new Creation(gnumBodies); /* creates random sized bodies via the Creation constructor */
@@ -93,7 +92,7 @@ public class Driver {
             /* Sequential Barnes Hut program */
             else if (program == 3) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies);
+                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt);
                 inBHS.buildQuadTree(forces);
                 //inBHS.initiate();
                 t2 = System.nanoTime();
@@ -133,7 +132,7 @@ public class Driver {
 
 
 
-        }
+       // }
     }
 
 }

@@ -34,6 +34,8 @@ public class Body {
      * calculate total force for two pair of bodies
      */
     public Vector calculateForces(Body otherBody){
+        System.out.println("position = " + position);
+        System.out.println("otherBody = " + otherBody.position);
         Vector delta = otherBody.position.subtract(this.position);
         double distance = delta.magnitude();
         double force = (G * this.mass * otherBody.mass) / (distance*distance); // Newtons law of Gravity F = G * m1 * m2 / r 2
@@ -92,6 +94,8 @@ public class Body {
         Vector position = this.position.add(body.position);
         Vector velocity = this.velocity.add(body.velocity);
         double mass = this.mass + body.mass;
+        System.out.println("X = " + position.getX());
+        System.out.println("Y = " + position.getY());
 
         return new Body(position, velocity, mass);
     }

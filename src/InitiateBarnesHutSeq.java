@@ -3,14 +3,14 @@ public class InitiateBarnesHutSeq {
     private Body[] bodies;
     private int dt;
 
-    public InitiateBarnesHutSeq(Body[] bodies) {
+    public InitiateBarnesHutSeq(Body[] bodies, int dt) {
         this.bodies = bodies;
         this.dt = dt;
     }
 
     public void buildQuadTree(Vector[] forces) {
 
-        double sizeOfTheUniverse = 5000;
+        double sizeOfTheUniverse = 500;
         double[] startCoordinates = {50, 50};
         Vector startVector = new Vector(startCoordinates);
 

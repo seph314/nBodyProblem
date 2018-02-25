@@ -78,22 +78,23 @@ public class QuadTree {
             this.aggregatedBodies = body;
 
         /* if internal nodes */
-        if (!external()) {
+        else if (!external()) {
             aggregatedBodies = aggregatedBodies.aggregate(body); /* aggregate the body if it's internal */
             insert(body);
-        } else {
+        }
+        else if(external()){
             /* aggregate four new Child nodes to this node */
-            northWest = new QuadTree(quad.northWest());
+            /*northWest = new QuadTree(quad.northWest());
             northEast = new QuadTree(quad.northEast());
             southWest = new QuadTree(quad.southWest());
-            southEast = new QuadTree(quad.southEast());
+            southEast = new QuadTree(quad.southEast());*/
 
             /* insert bodies */
             insert(aggregatedBodies);
-            insert(body);
+            build(body);
 
             /* aggregate aggregatedBodies */
-            aggregatedBodies = aggregatedBodies.aggregate(body);
+            //aggregatedBodies = aggregatedBodies.aggregate(body);
         }
     }
 
@@ -110,19 +111,23 @@ public class QuadTree {
     }
 
     /**
-     * Inserts the body into the right Quadrant
+     * Inserts the body into the correct Quadrant
      *
      * @param body is the body that we want to insert
      */
     private void insert(Body body) {
-        if (body.inQuad(quad.northWest()))
-            northWest.build(body);
-        if (body.inQuad(quad.northEast()))
-            northEast.build(body);
-        if (body.inQuad(quad.southWest()))
-            southWest.build(body);
-        if (body.inQuad(quad.southEast()))
-            southEast.build(body);
+        if (body.inQuad(quad.northWest())){
+            if (this.northWest==null) {this.northWest= new QuadTree(quad.northWest());}
+            northWest.build(body);}
+        if (body.inQuad(quad.northEast())){
+            if (this.northEast==null) {this.northEast= new QuadTree(quad.northEast());}
+            northEast.build(body);}
+        if (body.inQuad(quad.southWest())){
+            if (this.southWest==null) {this.southWest= new QuadTree(quad.southWest());}
+            southWest.build(body);}
+        if (body.inQuad(quad.southEast())){
+            if (this.southEast==null) {this.southEast= new QuadTree(quad.southEast());}
+            southEast.build(body);}
     }
 
     /**
@@ -145,18 +150,22 @@ public class QuadTree {
 
         /* if the node is external we calculates the forces the aggregated bodies applies on this body
         * bodies do not apply forces on them selves ans not from null */
-        if (external() && !body.equals(aggregatedBodies)){
-            return body.calculateForces(aggregatedBodies);
-        }
-        else { /* when the node is internal */
-            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta) { /* if this is true then the body is far away*/
+        if (external()){
+            if (body != aggregatedBodies)
                 return body.calculateForces(aggregatedBodies);
-            }else {
-                northWest.calculateForce(body);
-                northEast.calculateForce(body);
-                southWest.calculateForce(body);
-                southEast.calculateForce(body);
+        }
+        else if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { /* if this is true then the body is far away*/
+                return body.calculateForces(aggregatedBodies);
             }
+        else {
+            if(northWest != null)
+                northWest.calculateForce(body);
+            if(northEast != null)
+                northEast.calculateForce(body);
+            if(southWest != null)
+                southWest.calculateForce(body);
+            if(southEast != null)
+                southEast.calculateForce(body);
         }
         return new Vector(new double[] {1,1});
     }
