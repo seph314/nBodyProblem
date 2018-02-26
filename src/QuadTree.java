@@ -85,11 +85,12 @@ public class QuadTree {
             this.aggregatedBodies = body;
         }
 
-        /* if internal nodes */
+        /* if the body is internal: update the center of mass and total mass
+        * recursively insert the body into the matching Quadrant*/
         else if (!external()) {
             aggregatedBodies = aggregatedBodies.aggregate(body); /* aggregate the body if it's internal */
             insert(body);
-        }
+        } /* if the node is external, we divide again to create four more children */
         else if (external()){
             /* aggregate four new Child nodes to this node */
             /*northWest = new QuadTree(quad.northWest());
@@ -161,13 +162,17 @@ public class QuadTree {
         if (body == null || body.equals(aggregatedBodies))
             return;
 
+        /* if external: calculate the force applies to the body*/
         if (external())
         body.addForce(aggregatedBodies);
 
+
         else{
+            /* if the body is far enough away, treat all nodes under this internal as the same Body */
             if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { /* if this is true then the body is far away*/
                     body.addForce(aggregatedBodies);
                 }
+                /* else run the same thing on each of the internal nodes children */
             else {
                 if(northWest != null)
                     northWest.calculateForce(body);
