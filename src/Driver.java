@@ -16,7 +16,7 @@ public class Driver {
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 1;
+        int program = 3;
        // while(program != 0){
            /* System.out.println("\n****** N-body problem ****** \n");
 

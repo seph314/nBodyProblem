@@ -7,7 +7,15 @@
  * *
  * *    We will use a quad tree (2D) structure to store the points/bodies in.
  * *
- * *    We will continue to divide into quadrants until there is only one particle in a leaf-node.
+ * *    We will recursively divide the Bodies into groups in out Quad-Tree. Each node can has 4 children, they may be empty.
+ * *    The first node represents all the space and this Nodes Children represents the first four Quadrants.
+ * *    Each of these Quadrants can/will be subdivided into four new Quadrants and so on.
+ * *    Each internal node will represent all the bodies beneath it in the tree. And each External node will
+ * *    represent a body.
+ * *
+ * *    If we want to know the net force on a body, we can traverse the tree (from the root) and if we get to a internal body
+ * *    that we think is far enough away that the accuracy is not suffering, we simply use that internal nodes aggravates properties
+ * *    to calculate the force instead of all the bodies beneath it in the Tree.
  * *
  * *    With this Quad-tree we can calculate the total mass and it's center for each "box".
  * *    Traverse the tree for each particle to calculate the force. This parts is done in parallel with multiple threads.
