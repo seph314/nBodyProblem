@@ -93,7 +93,7 @@ public class Driver {
             else if (program == 3) {
                 t1 = System.nanoTime();
                 InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt, far, numSteps);
-                inBHS.buildQuadTree(forces);
+                inBHS.buildQuadTree();
                 //inBHS.initiate();
                 t2 = System.nanoTime();
                 t3 = t2 - t1;

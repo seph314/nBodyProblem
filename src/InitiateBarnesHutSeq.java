@@ -50,25 +50,8 @@ public class InitiateBarnesHutSeq {
         this.far = far;
         this.numSteps = numSteps;
     }
-    public void addforces(Quad quad) {
-        QuadTree thetree = new QuadTree(quad, far);
-        // If the body is still on the screen, add it to the tree
-        for (int i = 0; i < bodies.length; i++) {
-            if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
-        }
-        //Now, use out methods in BHTree to update the forces,
-        //traveling recursively through the tree
-        for (int i = 0; i < bodies.length; i++) {
-            bodies[i].resetForce();
-            if (bodies[i].inQuad(quad)) {
-                thetree.calculateForce(bodies[i]);
-                //Calculate the new positions on a time step dt (1e11 here)
-                bodies[i].update(dt);
-            }
-        }
-    }
 
-    public void buildQuadTree(Vector[] forces) {
+    public void buildQuadTree() {
 
         double sizeOfTheUniverse = 1E10;
         double[] startCoordinates = {1E8, 1E8};
@@ -79,9 +62,27 @@ public class InitiateBarnesHutSeq {
 
 
         /* calculate forces */
-        for(int i = 0; i < numSteps; i++)
-                addforces(quad);
+        for (int i = 0; i < numSteps; i++)
+            addforces(quad);
 
+    }
+
+    public void addforces(Quad quad) {
+        QuadTree thetree = new QuadTree(quad, far);
+        // If the body is still on the screen, add it to the tree
+        for (int i = 0; i < bodies.length; i++) {
+            if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
+        }
+        //Now, use out methods in BHTree to update the forces,
+        //traveling recursively through the tree
+        for (Body body : bodies) {
+            body.resetForce();
+            if (body.inQuad(quad)) {
+                thetree.calculateForce(body);
+                //Calculate the new positions on a time step dt (1e11 here)
+                body.update(dt);
+            }
+        }
     }
 }
 
