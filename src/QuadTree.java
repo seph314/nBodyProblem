@@ -81,30 +81,22 @@ public class QuadTree {
      */
     public void build(Body body) {
 
-        /* if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here*/
+        // if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here
         if (this.aggregatedBodies == null){
             this.aggregatedBodies = body;
         }
 
-        /* if the body is internal: update the center of mass and total mass
-        * recursively insert the body into the matching Quadrant*/
+        // if the body is internal: update the center of mass and total mass
+        // recursively insert the body into the matching Quadrant
         else if (!external()) {
-            aggregatedBodies = aggregatedBodies.aggregate(body); /* aggregate the body if it's internal */
+            aggregatedBodies = aggregatedBodies.aggregate(body); // aggregate the body if it's internal
             insert(body);
-        } /* if the node is external, we divide again to create four more children */
+        }
         else if (external()){
-            /* aggregate four new Child nodes to this node */
-            /*northWest = new QuadTree(quad.northWest());
-            northEast = new QuadTree(quad.northEast());
-            southWest = new QuadTree(quad.southWest());
-            southEast = new QuadTree(quad.southEast());*/
 
-            /* insert bodies */
             insert(aggregatedBodies);
             insert(body);
 
-            /* aggregate aggregatedBodies */
-           // aggregatedBodies = aggregatedBodies.aggregate(body);
         }
     }
 
@@ -156,24 +148,23 @@ public class QuadTree {
      *
      */
     public void calculateForce(Body body) {
-        /* TODO must force be initated to awoid nullPonterExceptions? */
 
-        /* if the node is external we calculates the forces the aggregated bodies applies on this body
-        * bodies do not apply forces on them selves ans not from null */
+        // if the node is external we calculates the forces the aggregated bodies applies on this body
+        // bodies do not apply forces on them selves ans not from null
         if (body == null || body.equals(aggregatedBodies))
             return;
 
-        /* if external: calculate the force applies to the body*/
+        // if external: calculate the force applies to the body
         if (external())
         body.addForce(aggregatedBodies);
 
 
         else{
-            /* if the body is far enough away, treat all nodes under this internal as the same Body */
-            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { /* if this is true then the body is far away*/
+            // if the body is far enough away, treat all nodes under this internal as the same Body
+            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { //if this is true then the body is far away*/
                     body.addForce(aggregatedBodies);
                 }
-                /* else run the same thing on each of the internal nodes children */
+                // else run the same thing on each of the internal nodes children
             else {
                 if(northWest != null)
                     northWest.calculateForce(body);
