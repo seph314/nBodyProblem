@@ -76,21 +76,34 @@ public class InitiateBarnesHutParallel {
         for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
         }
-        //Now, use out methods in BHTree to update the forces,
-        //traveling recursively through the tree
+
+        int workers = 4;
+        int w = 0;
+        BHWorker worker[] = new BHWorker[workers];
+        for (int i = 0; i < workers; i++) {
+            worker[i] = new BHWorker(workers, w, dt, bodies, thetree, quad);
+            w += (bodies.length / workers);
+            worker[i].start();
+        }
+
+        for (int i = 0; i < workers; i++) {
+            worker[i].join();
+        }
+
+        }
+
+   /* public void forceMove(QuadTree qT, Quad quad){
+
         for (Body body : bodies) {
             body.resetForce();
             if (body.inQuad(quad)) {
-                thetree.calculateForce(body);
-                //Calculate the new positions on a time step dt (1e11 here)
-
-//                thread = new Thread(() -> body.update(dt));
-//                thread.start();
-//                thread.join();
+                qT.calculateForce(body);
                 body.update(dt);
 
 
-            }
+
+
         }
-    }
+        }
+    }*/
 }
