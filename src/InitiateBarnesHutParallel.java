@@ -45,13 +45,15 @@ public class InitiateBarnesHutParallel {
     private int dt;
     private double far;
     private int numSteps;
+    private int workers;
     Thread thread;
 
-    public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps) {
+    public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers) {
         this.bodies = bodies;
         this.dt = dt;
         this.far = far;
         this.numSteps = numSteps;
+        this.workers = numWorkers;
     }
 
     public void buildQuadTree() throws InterruptedException {
@@ -76,8 +78,8 @@ public class InitiateBarnesHutParallel {
         for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
         }
-
-        int workers = 4;
+        long t1, t2, t3;
+        t1 = System.nanoTime();
         int w = 0;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {
@@ -85,10 +87,14 @@ public class InitiateBarnesHutParallel {
             w += (bodies.length / workers);
             worker[i].start();
         }
+       // System.out.println("worker = " + worker[0].part +" " +  worker[1].part +" " + worker[2].part +" " + worker[3].part);
 
         for (int i = 0; i < workers; i++) {
             worker[i].join();
         }
+        t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println("Done" +":"+ t3/1000000);
 
         }
 

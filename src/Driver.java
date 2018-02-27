@@ -5,10 +5,10 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 120;
-        int numSteps = 12000;//12000;
+        int gnumBodies = 120000;
+        int numSteps = 1;//12000;
         double far = 0.5;
-        int numWorkers = 8;
+        int numWorkers = 2;
 
 
         boolean firstrun = true;
@@ -101,7 +101,7 @@ public class Driver {
             /* Parallel Barnes Hut program */
             else if (program == 4) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps);
+                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps, numWorkers);
                 inBHP.buildQuadTree();
                 //inBHP.initiate();
                 t2 = System.nanoTime();
@@ -126,7 +126,9 @@ public class Driver {
             System.out.println("numSteps = " + numSteps);
             System.out.println("far = " + far);
             System.out.println("numWorkers = " + numWorkers);
+        System.out.println("program = " + program);
             System.out.println("The simulaiton took " + t3/1000000 + "ms");
+
 
             //new Draw(bodies);
 

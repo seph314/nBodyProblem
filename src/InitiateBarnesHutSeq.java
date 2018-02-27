@@ -75,6 +75,8 @@ public class InitiateBarnesHutSeq {
         }
         //Now, use out methods in BHTree to update the forces,
         //traveling recursively through the tree
+        long t1, t2, t3;
+        t1 = System.nanoTime();
         for (Body body : bodies) {
             body.resetForce();
             if (body.inQuad(quad)) {
@@ -83,6 +85,9 @@ public class InitiateBarnesHutSeq {
                 body.update(dt);
             }
         }
+        t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println("SThread" +": "+ t3/1000000);
     }
 }
 

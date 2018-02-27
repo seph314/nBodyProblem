@@ -17,7 +17,8 @@ public class BHWorker extends Thread{
     }
 
     public void run(){
-
+        long t1, t2, t3;
+        t1 = System.nanoTime();
         for(int i = part; i < (part+(bodies.length/(double)workers)); i++){
             bodies[i].resetForce();
             if (bodies[i].inQuad(quad)) {
@@ -25,5 +26,9 @@ public class BHWorker extends Thread{
                 bodies[i].update(dt);
             }
         }
+        t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println(currentThread() +":"+ t3/1000000);
+
     }
 }

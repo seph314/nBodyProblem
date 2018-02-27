@@ -40,7 +40,7 @@ public class SimulateN2Seq {
                     forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
 
-        Draw draw = new Draw(bodies);
+       // Draw draw = new Draw(bodies);
 
 //        int numberOfTimes = 0;
 //        while (numberOfTimes < 99) {
@@ -52,7 +52,7 @@ public class SimulateN2Seq {
 
             for (int i = 0; i < numberOfBodies; i++) {
                 bodies[i].movePoints(forces[i], dt); /* move all points */
-                new Draw(bodies);
+                //new Draw(bodies);
             }
 
 
