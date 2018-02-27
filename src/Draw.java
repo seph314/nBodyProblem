@@ -11,9 +11,9 @@ class Draw extends JFrame {
     /**
      * Constructor
      */
-    Draw(Body[] bodies)  {
+    Draw(Body[] bodies) {
         this.bodies = bodies; /* get bodies */
-        this.setSize(800,600); /* size of window */
+        this.setSize(800, 600); /* size of window */
         this.setTitle("Graphics simulation"); /* name of window */
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); /* exit on close */
         this.add(/*new DrawBody()*/drawBody, BorderLayout.CENTER);
@@ -24,8 +24,8 @@ class Draw extends JFrame {
         this.bodies = bodies;
     }
 
-    public void keepDrawing(){
-        this.add(new DrawBody(), BorderLayout.CENTER);
+    public void keepDrawing() {
+        this.add(drawBody, BorderLayout.CENTER);
         this.setVisible(true); /* shows window */
 
     }
@@ -34,10 +34,10 @@ class Draw extends JFrame {
      * Inner class DrawBody
      * This is going to be a new component so it extends JComponent
      */
-    private class DrawBody extends JComponent{
+    private class DrawBody extends JComponent {
 
-        public void paint(Graphics g){
-            Graphics2D graphics2D = (Graphics2D)g; /* use Graphics2D to draw 2D graphics */
+        public void paint(Graphics g) {
+            Graphics2D graphics2D = (Graphics2D) g; /* use Graphics2D to draw 2D graphics */
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON); /* cleaner drawings with antialiasing */
 
@@ -45,7 +45,7 @@ class Draw extends JFrame {
 
             /* draw all bodies */
             for (Body body : bodies) {
-                graphics2D.fill(new Arc2D.Double(body.getXPosition()/20, body.getYPosition()/20, body.getMass()/800, body.getMass()/800, 360, 360, Arc2D.OPEN));
+                graphics2D.fill(new Arc2D.Double(body.getXPosition() / 20, body.getYPosition() / 20, body.getMass() / 800, body.getMass() / 800, 360, 360, Arc2D.OPEN));
             }
         }
     }

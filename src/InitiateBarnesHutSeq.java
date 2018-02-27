@@ -50,6 +50,7 @@ public class InitiateBarnesHutSeq {
         this.far = far;
         this.numSteps = numSteps;
     }
+
     public void addforces(Quad quad) {
         QuadTree thetree = new QuadTree(quad, far);
         // If the body is still on the screen, add it to the tree
@@ -83,11 +84,11 @@ public class InitiateBarnesHutSeq {
         System.out.println("Bodies length " + bodies.length + " " + bodies[0].getXPosition());
 
         /* build tree */
-       // for (Body body : bodies) {
-         //   if (body.inQuad(quad)) { /* TODO check this part again */
-           //     quadTree.build(body);
-           // }
-       // }
+        // for (Body body : bodies) {
+        //   if (body.inQuad(quad)) { /* TODO check this part again */
+        //     quadTree.build(body);
+        // }
+        // }
 
         /* calculate forces */
         for(int i = 0; i < numSteps; i++)
@@ -96,9 +97,9 @@ public class InitiateBarnesHutSeq {
         //    forces[i] = forces[i].add(quadTree.calculateForce(bodies[i])); /* calculate an array of forces */
         //}
 
-       // for (int i = 0; i < bodies.length; i++) {
+        // for (int i = 0; i < bodies.length; i++) {
         //    bodies[i].movePoints(forces[i], dt); /* move all points */
-       // }
+        // }
 
 //        for (Body body : bodies){
 //            body.movePoints(quadTree.calculateForce(body), dt);

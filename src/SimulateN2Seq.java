@@ -40,14 +40,20 @@ public class SimulateN2Seq {
                     forces[i] = forces[i].add(bodies[i].calculateForces(bodies[j])); /* calculate an array of forces */
             }
 
+        Draw draw = new Draw(bodies);
 
-        // while (true){
-        //draw.setBodies(bodies);
-        //draw.keepDrawing();
-//                new Draw(bodies);
-        for (int i = 0; i< numberOfBodies; i++) {
-            bodies[i].movePoints(forces[i], dt); /* move all points */
-        }
+//        int numberOfTimes = 0;
+//        while (numberOfTimes < 99) {
+//            numberOfTimes++;
+//            draw.setBodies(bodies);
+////        draw.keepDrawing();
+//            new Draw(bodies);
+
+
+            for (int i = 0; i < numberOfBodies; i++) {
+                bodies[i].movePoints(forces[i], dt); /* move all points */
+                new Draw(bodies);
+            }
 
 
                 /*for (int i = w; i<(w+(bodies.length/workers)); i++) {
@@ -55,9 +61,9 @@ public class SimulateN2Seq {
                     System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
                     System.out.println("mass: " + bodies[i].getMass());
                 }*/
-        //}
+        }
 
 //        new Draw(bodies); /* graphical representation of bodies */
 
-    }
+//    }
 }
