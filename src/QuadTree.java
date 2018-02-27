@@ -74,6 +74,46 @@ public class QuadTree {
         this.theta = far;
     }
 
+    public void threadQuads(Body[] bodies, int w){
+        aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
+        this.northWest = new QuadTree(quad.northEast(), theta);
+        this.northEast = new QuadTree(quad.northWest(), theta);
+        this.southWest = new QuadTree(quad.southWest(), theta);
+        this.southEast = new QuadTree(quad.southEast(), theta);
+        QuadWorker qWorker[] = new QuadWorker[w];
+        qWorker[0] = new QuadWorker(northWest, bodies, this);
+        qWorker[1] = new QuadWorker(northEast, bodies, this);
+        qWorker[2] = new QuadWorker(southWest, bodies, this);
+        qWorker[3] = new QuadWorker(southEast, bodies, this);
+        qWorker[0].setName("NW");
+        qWorker[1].setName("NE");
+        qWorker[2].setName("SW");
+        qWorker[3].setName("SE");
+        for (int i = 0; i < w; i++) {
+            qWorker[i].start();
+        }
+        for (int i = 0; i < w; i++) {
+            try {
+                qWorker[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void threadMagic(Body[] bodies, QuadTree root){
+        int n = bodies.length;
+        for(int i = 0; i < n; i++){
+           // System.out.println(Thread.currentThread() + "" + i);
+            if (bodies[i].inQuad(quad)){
+                System.out.println(Thread.currentThread() + "" + i);
+                build(bodies[i]);
+                root.aggregatedBodies = root.aggregatedBodies.aggregate(bodies[i]);
+            }
+
+        }
+    }
+
     /**
      * Insert aggregatedBodies in tree
      *

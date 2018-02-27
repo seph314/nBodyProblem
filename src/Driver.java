@@ -5,10 +5,10 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 120000;
+        int gnumBodies = 16;
         int numSteps = 1;//12000;
         double far = 0.5;
-        int numWorkers = 2;
+        int numWorkers = 4;
 
 
         boolean firstrun = true;

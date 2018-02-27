@@ -38,6 +38,9 @@
  * * * * * * * * * * * * * * * * * */
 
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+
 public class InitiateBarnesHutParallel {
 
 
@@ -46,6 +49,7 @@ public class InitiateBarnesHutParallel {
     private double far;
     private int numSteps;
     private int workers;
+    private CyclicBarrier barrier;
     Thread thread;
 
     public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers) {
@@ -54,12 +58,13 @@ public class InitiateBarnesHutParallel {
         this.far = far;
         this.numSteps = numSteps;
         this.workers = numWorkers;
+        barrier = new CyclicBarrier(numWorkers);
     }
 
     public void buildQuadTree() throws InterruptedException {
 
-        double sizeOfTheUniverse = 1E10;
-        double[] startCoordinates = {1E8, 1E8};
+        double sizeOfTheUniverse = 160;
+        double[] startCoordinates = {80, 85};
         Vector startVector = new Vector(startCoordinates);
 
         /* create new Quad */
@@ -75,9 +80,11 @@ public class InitiateBarnesHutParallel {
     public void addforces(Quad quad) throws InterruptedException {
         QuadTree thetree = new QuadTree(quad, far);
         // If the body is still on the screen, add it to the tree
-        for (int i = 0; i < bodies.length; i++) {
+        /*for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
-        }
+        }*/
+        thetree.threadQuads(bodies, workers);
+
         long t1, t2, t3;
         t1 = System.nanoTime();
         int w = 0;
