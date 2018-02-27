@@ -5,10 +5,10 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 200;
-        int numSteps = 1;
-        int far = 0;
-        int numWorkers = 1;
+        int gnumBodies = 120;
+        int numSteps = 12000;//12000;
+        double far = 0.5;
+        int numWorkers = 8;
 
 
         boolean firstrun = true;
@@ -92,7 +92,7 @@ public class Driver {
             /* Sequential Barnes Hut program */
             else if (program == 3) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt);
+                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt, far, numSteps);
                 inBHS.buildQuadTree(forces);
                 //inBHS.initiate();
                 t2 = System.nanoTime();

@@ -56,7 +56,7 @@ public class QuadTree {
     private QuadTree southEast;
 
     /* theta */
-    private double theta = 0.0;
+    private double theta;// = 0.0;
 
     /**
      * QuadTree Constructor
@@ -64,13 +64,14 @@ public class QuadTree {
      *
      * @param quad
      */
-    QuadTree(Quad quad) {
+    QuadTree(Quad quad, double far) {
         this.quad = quad;
         this.aggregatedBodies = null;
         this.northWest = null;
         this.northEast = null;
         this.southWest = null;
         this.southEast = null;
+        this.theta = far;
     }
 
     /**
@@ -126,16 +127,16 @@ public class QuadTree {
      */
     private void insert(Body body) {
         if (body.inQuad(quad.northWest())){
-            if (this.northWest==null) {this.northWest= new QuadTree(quad.northWest());}
+            if (this.northWest==null) {this.northWest= new QuadTree(quad.northWest(), theta);}
             northWest.build(body);}
         if (body.inQuad(quad.northEast())){
-            if (this.northEast==null) {this.northEast= new QuadTree(quad.northEast());}
+            if (this.northEast==null) {this.northEast= new QuadTree(quad.northEast(), theta);}
             northEast.build(body);}
         if (body.inQuad(quad.southWest())){
-            if (this.southWest==null) {this.southWest= new QuadTree(quad.southWest());}
+            if (this.southWest==null) {this.southWest= new QuadTree(quad.southWest(), theta);}
             southWest.build(body);}
         if (body.inQuad(quad.southEast())){
-            if (this.southEast==null) {this.southEast= new QuadTree(quad.southEast());}
+            if (this.southEast==null) {this.southEast= new QuadTree(quad.southEast(), theta);}
             southEast.build(body);}
     }
 

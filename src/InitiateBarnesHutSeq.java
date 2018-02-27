@@ -41,13 +41,17 @@ public class InitiateBarnesHutSeq {
 
     private Body[] bodies;
     private int dt;
+    private double far;
+    private int numSteps;
 
-    public InitiateBarnesHutSeq(Body[] bodies, int dt) {
+    public InitiateBarnesHutSeq(Body[] bodies, int dt, double far, int numSteps) {
         this.bodies = bodies;
         this.dt = dt;
+        this.far = far;
+        this.numSteps = numSteps;
     }
     public void addforces(Quad quad) {
-        QuadTree thetree = new QuadTree(quad);
+        QuadTree thetree = new QuadTree(quad, far);
         // If the body is still on the screen, add it to the tree
         for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
@@ -66,8 +70,8 @@ public class InitiateBarnesHutSeq {
 
     public void buildQuadTree(Vector[] forces) {
 
-        double sizeOfTheUniverse = 50000000;
-        double[] startCoordinates = {50, 50};
+        double sizeOfTheUniverse = 1E10;
+        double[] startCoordinates = {1E8, 1E8};
         Vector startVector = new Vector(startCoordinates);
 
         /* create new Quad */
@@ -86,8 +90,8 @@ public class InitiateBarnesHutSeq {
        // }
 
         /* calculate forces */
-
-        addforces(quad);
+        for(int i = 0; i < numSteps; i++)
+                addforces(quad);
         //for (int i = 0; i < bodies.length; i++) {
         //    forces[i] = forces[i].add(quadTree.calculateForce(bodies[i])); /* calculate an array of forces */
         //}
