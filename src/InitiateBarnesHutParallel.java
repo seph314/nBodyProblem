@@ -84,10 +84,10 @@ public class InitiateBarnesHutParallel {
                 thetree.calculateForce(body);
                 //Calculate the new positions on a time step dt (1e11 here)
 
-                thread = new Thread(() -> body.update(dt));
-                thread.start();
-                thread.join();
-//                body.update(dt);
+//                thread = new Thread(() -> body.update(dt));
+//                thread.start();
+//                thread.join();
+                body.update(dt);
 
 
             }
