@@ -82,17 +82,16 @@ public class QuadTree {
     public void build(Body body) {
 
         // if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here
-        if (this.aggregatedBodies == null){
-            this.aggregatedBodies = body;
+        if (aggregatedBodies == null) {
+            aggregatedBodies = body;
         }
 
         // if the body is internal: update the center of mass and total mass
         // recursively insert the body into the matching Quadrant
         else if (!external()) {
             aggregatedBodies = aggregatedBodies.aggregate(body); // aggregate the body if it's internal
-            insert(body);
-        }
-        else if (external()){
+            insert(body); // and insert it into the Tree
+        } else if (external()) {
 
             insert(aggregatedBodies);
             insert(body);
@@ -118,34 +117,45 @@ public class QuadTree {
      * @param body is the body that we want to insert
      */
     private void insert(Body body) {
-        if (body.inQuad(quad.northWest())){
-            if (this.northWest==null) {this.northWest= new QuadTree(quad.northWest(), theta);}
-            northWest.build(body);}
-        if (body.inQuad(quad.northEast())){
-            if (this.northEast==null) {this.northEast= new QuadTree(quad.northEast(), theta);}
-            northEast.build(body);}
-        if (body.inQuad(quad.southWest())){
-            if (this.southWest==null) {this.southWest= new QuadTree(quad.southWest(), theta);}
-            southWest.build(body);}
-        if (body.inQuad(quad.southEast())){
-            if (this.southEast==null) {this.southEast= new QuadTree(quad.southEast(), theta);}
-            southEast.build(body);}
+        if (body.inQuad(quad.northWest())) {
+            if (this.northWest == null) {
+                this.northWest = new QuadTree(quad.northWest(), theta);
+            }
+            northWest.build(body);
+        }
+        if (body.inQuad(quad.northEast())) {
+            if (this.northEast == null) {
+                this.northEast = new QuadTree(quad.northEast(), theta);
+            }
+            northEast.build(body);
+        }
+        if (body.inQuad(quad.southWest())) {
+            if (this.southWest == null) {
+                this.southWest = new QuadTree(quad.southWest(), theta);
+            }
+            southWest.build(body);
+        }
+        if (body.inQuad(quad.southEast())) {
+            if (this.southEast == null) {
+                this.southEast = new QuadTree(quad.southEast(), theta);
+            }
+            southEast.build(body);
+        }
     }
 
     /**
      * Calculates the combined force the bodies in a QuadTree applies on a body
-     *
+     * <p>
      * If the mass of an internal node is far away we treat the bodies in that part
      * of the tree as a single body
-     *
+     * <p>
      * If the body is rather close, we calculate the force and check the children the same way
-     *
+     * <p>
      * We calculate if a body is close enough by the ratio of the with of the internal nodes region
      * and the distance of the body and the nodes mass center.
-     *
+     * <p>
      * This value is called Theta. Large Theta increases speed and smaller Theta accuracy.
      * (If Theta is 0, then no internal node is treated as a single body)
-     *
      */
     public void calculateForce(Body body) {
 
@@ -156,23 +166,23 @@ public class QuadTree {
 
         // if external: calculate the force applies to the body
         if (external())
-        body.addForce(aggregatedBodies);
+            body.addForce(aggregatedBodies);
 
 
-        else{
+        else {
             // if the body is far enough away, treat all nodes under this internal as the same Body
-            if (quad.getLength()/aggregatedBodies.calculateDistance(body) < theta ) { //if this is true then the body is far away*/
-                    body.addForce(aggregatedBodies);
-                }
-                // else run the same thing on each of the internal nodes children
+            if (quad.getLength() / aggregatedBodies.calculateDistance(body) < theta) { //if this is true then the body is far away*/
+                body.addForce(aggregatedBodies);
+            }
+            // else run the same thing on each of the internal nodes children
             else {
-                if(northWest != null)
+                if (northWest != null)
                     northWest.calculateForce(body);
-                if(northEast != null)
+                if (northEast != null)
                     northEast.calculateForce(body);
-                if(southWest != null)
+                if (southWest != null)
                     southWest.calculateForce(body);
-                if(southEast != null)
+                if (southEast != null)
                     southEast.calculateForce(body);
             }
         }

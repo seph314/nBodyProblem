@@ -16,7 +16,7 @@ public class Driver {
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 3;
+        int program = 4;
        // while(program != 0){
            /* System.out.println("\n****** N-body problem ****** \n");
 
@@ -101,7 +101,8 @@ public class Driver {
             /* Parallel Barnes Hut program */
             else if (program == 4) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel();
+                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps);
+                inBHP.buildQuadTree();
                 //inBHP.initiate();
                 t2 = System.nanoTime();
                 t3 = t2 - t1;
