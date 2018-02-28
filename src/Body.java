@@ -6,7 +6,7 @@ public class Body {
     private Vector force = new Vector(new double[]{0,0});
 
     private double mass;                /* mass */
-    private final double G = 6.67e-11;  /* gravitational constant */
+    private double G = 6.67e-11;  /* gravitational constant */
 
     /**
      * Body Constructor
@@ -19,6 +19,14 @@ public class Body {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
+    }
+
+    public void setMass(double mass) {
+        this.mass = mass;
+    }
+
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
     }
 
     public void resetForce() {

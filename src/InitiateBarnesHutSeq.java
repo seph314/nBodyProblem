@@ -43,18 +43,20 @@ public class InitiateBarnesHutSeq {
     private int dt;
     private double far;
     private int numSteps;
+    double sizeOfTheUniverse;
+    double[] startCoordinates;
 
-    public InitiateBarnesHutSeq(Body[] bodies, int dt, double far, int numSteps) {
+    public InitiateBarnesHutSeq(Body[] bodies, int dt, double far, int numSteps, double sizeOfTheUniverse,  double[] startCoordinates) {
         this.bodies = bodies;
         this.dt = dt;
         this.far = far;
         this.numSteps = numSteps;
+        this.sizeOfTheUniverse = sizeOfTheUniverse;
+        this.startCoordinates = startCoordinates;
     }
 
     public void buildQuadTree() {
 
-        double sizeOfTheUniverse = 1E10;
-        double[] startCoordinates = {1E8, 1E8};
         Vector startVector = new Vector(startCoordinates);
 
         /* create new Quad */

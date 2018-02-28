@@ -12,53 +12,97 @@ public class Creation {
      *
      * @param numberOfBodies is the number of random bodies
      */
-    Creation(int numberOfBodies) {
+    Creation(int numberOfBodies, double sizeOfTheUniverse) {
 
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
-        int m = 0;
+        int m = 1000;
         int p = 0;
         int v = 0;
+        double mid = sizeOfTheUniverse/2;
+
 
         for (int i = 0; i < numberOfBodies; i++) {
             m += 100;
             p += 10;
-            v += 10;
-            /* generate random x and y position coordinates */
-            double px = p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double py = p+10;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            v += 1;
 
-            /* generate random x and y velocity coordinates */
-            double vx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double vy = v+10;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double mass = m;
 
-            /* generate random mass */
-            double mass = m;// ThreadLocalRandom.current().nextInt(1000, 20000 + 1);
+            double NWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
-            /* create position and velocity arrays */
-            double[] postion = {px, py};
-            double[] velocity = {vx, vy};
+            double NWpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
 
-            /* create position and velocity vectors */
-            Vector positionVector = new Vector(postion);
-            Vector velocityVector = new Vector(velocity);
+            double NWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+
+            double NWvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWvy = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEvy = - v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+
+            double[] postionNW = {NWpx, NWpy};
+            double[] postionNE = {NEpx, NEpy};
+            double[] postionSW = {SWpx, SWpy};
+            double[] postionSE = {SEpx, SEpy};
+
+            double[] velocityNW = {NWvx, NWvy};
+            double[] velocityNE = {NEvx, NEvy};
+            double[] velocitySW = {SWvx, SWvy};
+            double[] velocitySE = {SEvx, SEvy};
+
+            Vector positionVectorNW = new Vector(postionNW);
+            Vector positionVectorNE = new Vector(postionNE);
+            Vector positionVectorSW = new Vector(postionSW);
+            Vector positionVectorSE = new Vector(postionSE);
+
+            Vector velocityVectorNW = new Vector(velocityNW);
+            Vector velocityVectorNE = new Vector(velocityNE);
+            Vector velocityVectorSW = new Vector(velocitySW);
+            Vector velocityVectorSE = new Vector(velocitySE);
 
             /* aggregate a new body to bodies */
-            bodies[i] = new Body(positionVector, velocityVector, mass);
+            bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
+            bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);
+            bodies[i++] = new Body(positionVectorSW, velocityVectorSW, mass);
+            bodies[i] = new Body(positionVectorSE, velocityVectorSE, mass);
         }
+        double mass = 20000;
 
 
-        /* generate random mass */
-        double mass = 1000000;
+        double px = mid;
 
-        /* create position and velocity arrays */
-        double[] postion = {50, 50};
-        double[] velocity = {0, 0};
 
-        /* create position and velocity vectors */
+        double py = mid;
+
+
+        double vx = 0;
+
+
+        double vy = 0;
+
+
+        double[] postion = {px, py};
+
+
+        double[] velocity = {vx, vy};
+
+
         Vector positionVector = new Vector(postion);
+
+
         Vector velocityVector = new Vector(velocity);
 
-       // bodies[numberOfBodies] = new Body(positionVector, velocityVector, mass);
+        //bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
+        bodies[1].setMass(50);
+        //bodies[1].setVelocity(velocityVector);
 
 
     }

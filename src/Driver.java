@@ -5,12 +5,14 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 16;
-        int numSteps = 1;//12000;
+        int gnumBodies = 4;
+        int numSteps = 10;//12000;
         double far = 0.5;
         int numWorkers = 4;
 
 
+        double sizeOfTheUniverse = 160;
+        double[] startCoordinates = {80, 80};
         boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
@@ -52,7 +54,7 @@ public class Driver {
             }*/
 
 
-            Creation creation = new Creation(gnumBodies); /* creates random sized bodies via the Creation constructor */
+            Creation creation = new Creation(gnumBodies, sizeOfTheUniverse); /* creates random sized bodies via the Creation constructor */
             bodies = creation.getBodies(); /* get the bodies */
             forces = new Vector[gnumBodies]; /* a new force array with the length of tge bodies array */
             for (int i = 0; i < gnumBodies; i++)
@@ -92,7 +94,7 @@ public class Driver {
             /* Sequential Barnes Hut program */
             else if (program == 3) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt, far, numSteps);
+                InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt, far, numSteps, sizeOfTheUniverse, startCoordinates);
                 inBHS.buildQuadTree();
                 //inBHS.initiate();
                 t2 = System.nanoTime();
@@ -101,7 +103,7 @@ public class Driver {
             /* Parallel Barnes Hut program */
             else if (program == 4) {
                 t1 = System.nanoTime();
-                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps, numWorkers);
+                InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps, numWorkers, sizeOfTheUniverse, startCoordinates);
                 inBHP.buildQuadTree();
                 //inBHP.initiate();
                 t2 = System.nanoTime();
@@ -110,16 +112,20 @@ public class Driver {
 
 
             //prints body, velocity and mass;
-           /* for (int i = 0; i<bodies.length; i++) {
+            for (int i = 0; i<bodies.length; i++) {
                 System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
                 System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
                 System.out.println("mass: " + bodies[i].getMass());
-            }*/
+            }
 
            //prints last body
+       /* System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
+        System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-2)].getVelocity()));
+        System.out.println("mass: " + bodies[(bodies.length-2)].getMass());
+
             System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
             System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
-            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());
+            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());*/
 
 
             System.out.println("\ngnumBodies = " + gnumBodies);
@@ -130,7 +136,7 @@ public class Driver {
             System.out.println("The simulaiton took " + t3/1000000 + "ms");
 
 
-            //new Draw(bodies);
+        //new Draw(bodies);
 
 
 

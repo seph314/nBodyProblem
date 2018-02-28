@@ -38,6 +38,9 @@
  * * * * * * * * * * * * * * * * * */
 
 
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Representation of a QuadTree
  */
@@ -47,16 +50,17 @@ public class QuadTree {
     private Quad quad;
 
     /* a aggregatedBodies */
-    private Body aggregatedBodies;
+    public Body aggregatedBodies;
 
     /* child quadrants */
-    private QuadTree northWest;
-    private QuadTree northEast;
-    private QuadTree southWest;
-    private QuadTree southEast;
+    public QuadTree northWest;
+    public QuadTree northEast;
+    public QuadTree southWest;
+    public QuadTree southEast;
 
     /* theta */
     private double theta;// = 0.0;
+
 
     /**
      * QuadTree Constructor
@@ -75,16 +79,17 @@ public class QuadTree {
     }
 
     public void threadQuads(Body[] bodies, int w){
+        ReentrantLock lock = new ReentrantLock();
         aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
         this.northWest = new QuadTree(quad.northEast(), theta);
         this.northEast = new QuadTree(quad.northWest(), theta);
         this.southWest = new QuadTree(quad.southWest(), theta);
         this.southEast = new QuadTree(quad.southEast(), theta);
         QuadWorker qWorker[] = new QuadWorker[w];
-        qWorker[0] = new QuadWorker(northWest, bodies, this);
-        qWorker[1] = new QuadWorker(northEast, bodies, this);
-        qWorker[2] = new QuadWorker(southWest, bodies, this);
-        qWorker[3] = new QuadWorker(southEast, bodies, this);
+        qWorker[0] = new QuadWorker(northWest, bodies, this, lock);
+        qWorker[1] = new QuadWorker(northEast, bodies, this, lock);
+        qWorker[2] = new QuadWorker(southWest, bodies, this, lock);
+        qWorker[3] = new QuadWorker(southEast, bodies, this, lock);
         qWorker[0].setName("NW");
         qWorker[1].setName("NE");
         qWorker[2].setName("SW");
@@ -92,23 +97,33 @@ public class QuadTree {
         for (int i = 0; i < w; i++) {
             qWorker[i].start();
         }
-        for (int i = 0; i < w; i++) {
             try {
-                qWorker[i].join();
+                qWorker[0].join();
+                qWorker[1].join();
+                qWorker[2].join();
+                qWorker[3].join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        //System.out.println("aggregatedBodies = " + aggregatedBodies.getMass());
+
     }
 
-    public void threadMagic(Body[] bodies, QuadTree root){
+    public void threadMagic(Body[] bodies, QuadTree root, ReentrantLock lock){
         int n = bodies.length;
         for(int i = 0; i < n; i++){
            // System.out.println(Thread.currentThread() + "" + i);
             if (bodies[i].inQuad(quad)){
-                System.out.println(Thread.currentThread() + "" + i);
+               // System.out.println(Thread.currentThread() + "" + i);
                 build(bodies[i]);
-                root.aggregatedBodies = root.aggregatedBodies.aggregate(bodies[i]);
+
+                /*lock.lock();
+                if(root.aggregatedBodies == null)
+                    root.aggregatedBodies = bodies[i];
+                else
+                    root.aggregatedBodies = root.aggregatedBodies.aggregate(bodies[i]);
+                lock.unlock();*/
+
             }
 
         }
@@ -124,6 +139,7 @@ public class QuadTree {
         // if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here
         if (aggregatedBodies == null) {
             aggregatedBodies = body;
+           // System.out.println(Thread.currentThread() + "agg");
         }
 
         // if the body is internal: update the center of mass and total mass
@@ -131,7 +147,8 @@ public class QuadTree {
         else if (!external()) {
             aggregatedBodies = aggregatedBodies.aggregate(body); // aggregate the body if it's internal
             insert(body); // and insert it into the Tree
-        } else if (external()) {
+        }
+        else if (external()) {
 
             insert(aggregatedBodies);
             insert(body);
@@ -161,25 +178,31 @@ public class QuadTree {
             if (this.northWest == null) {
                 this.northWest = new QuadTree(quad.northWest(), theta);
             }
-            northWest.build(body);
+             northWest.build(body);
         }
-        if (body.inQuad(quad.northEast())) {
-            if (this.northEast == null) {
-                this.northEast = new QuadTree(quad.northEast(), theta);
+        else {
+            if (body.inQuad(quad.northEast())) {
+                if (this.northEast == null) {
+                    this.northEast = new QuadTree(quad.northEast(), theta);
+                }
+                northEast.build(body);
             }
-            northEast.build(body);
-        }
-        if (body.inQuad(quad.southWest())) {
-            if (this.southWest == null) {
-                this.southWest = new QuadTree(quad.southWest(), theta);
+            else {
+                if (body.inQuad(quad.southWest())) {
+                    if (this.southWest == null) {
+                        this.southWest = new QuadTree(quad.southWest(), theta);
+                    }
+                    southWest.build(body);
+                }
+                else{
+                    if (body.inQuad(quad.southEast())) {
+                        if (this.southEast == null) {
+                            this.southEast = new QuadTree(quad.southEast(), theta);
+                        }
+                        southEast.build(body);
+                    }
+                }
             }
-            southWest.build(body);
-        }
-        if (body.inQuad(quad.southEast())) {
-            if (this.southEast == null) {
-                this.southEast = new QuadTree(quad.southEast(), theta);
-            }
-            southEast.build(body);
         }
     }
 
@@ -205,8 +228,11 @@ public class QuadTree {
             return;
 
         // if external: calculate the force applies to the body
-        if (external())
+        if (external()){
+            //System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies.getMass() + " Body" + body.getMass());
             body.addForce(aggregatedBodies);
+
+        }
 
 
         else {

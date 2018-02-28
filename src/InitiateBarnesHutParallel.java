@@ -40,6 +40,7 @@
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Semaphore;
 
 public class InitiateBarnesHutParallel {
 
@@ -51,20 +52,21 @@ public class InitiateBarnesHutParallel {
     private int workers;
     private CyclicBarrier barrier;
     Thread thread;
+    double sizeOfTheUniverse;
+    double[] startCoordinates;
 
-    public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers) {
+    public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers, double sizeOfTheUniverse,  double[] startCoordinates) {
         this.bodies = bodies;
         this.dt = dt;
         this.far = far;
         this.numSteps = numSteps;
         this.workers = numWorkers;
         barrier = new CyclicBarrier(numWorkers);
+        this.sizeOfTheUniverse = sizeOfTheUniverse;
+        this.startCoordinates = startCoordinates;
     }
 
     public void buildQuadTree() throws InterruptedException {
-
-        double sizeOfTheUniverse = 160;
-        double[] startCoordinates = {80, 85};
         Vector startVector = new Vector(startCoordinates);
 
         /* create new Quad */
@@ -84,10 +86,21 @@ public class InitiateBarnesHutParallel {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
         }*/
         thetree.threadQuads(bodies, workers);
+        System.out.println("mjao!");
+        System.out.println("thetree NE= " + thetree.northEast.aggregatedBodies.getMass());
+        System.out.println("thetree NW= " + thetree.northWest.aggregatedBodies.getMass());
+        System.out.println("thetree SW= " + thetree.southWest.aggregatedBodies.getMass());
+        System.out.println("thetree SE= " + thetree.southEast.aggregatedBodies.getMass());
+        System.out.println("thetree OG= " + thetree.aggregatedBodies.getMass());
+        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northEast.aggregatedBodies);
+        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northWest.aggregatedBodies);
+        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southWest.aggregatedBodies);
+        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southEast.aggregatedBodies);
 
         long t1, t2, t3;
         t1 = System.nanoTime();
         int w = 0;
+        workers = 1;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {
             worker[i] = new BHWorker(workers, w, dt, bodies, thetree, quad);
@@ -99,6 +112,7 @@ public class InitiateBarnesHutParallel {
         for (int i = 0; i < workers; i++) {
             worker[i].join();
         }
+        workers =4;
         t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("Done" +":"+ t3/1000000);
