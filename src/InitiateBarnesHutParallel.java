@@ -74,8 +74,9 @@ public class InitiateBarnesHutParallel {
 
 
         /* calculate forces */
-        for (int i = 0; i < numSteps; i++)
-            addforces(quad);
+        for (int i = 0; i < numSteps; i++){
+            quad = new Quad(startVector, sizeOfTheUniverse);
+            addforces(quad);}
 
     }
 
@@ -85,39 +86,49 @@ public class InitiateBarnesHutParallel {
         /*for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
         }*/
+        long t1, t2, t3;
+        t1 = System.nanoTime();
         thetree.threadQuads(bodies, workers);
-        System.out.println("mjao!");
-        System.out.println("thetree NE= " + thetree.northEast.aggregatedBodies.getMass());
-        System.out.println("thetree NW= " + thetree.northWest.aggregatedBodies.getMass());
-        System.out.println("thetree SW= " + thetree.southWest.aggregatedBodies.getMass());
-        System.out.println("thetree SE= " + thetree.southEast.aggregatedBodies.getMass());
-        System.out.println("thetree OG= " + thetree.aggregatedBodies.getMass());
         thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northEast.aggregatedBodies);
         thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northWest.aggregatedBodies);
         thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southWest.aggregatedBodies);
         thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southEast.aggregatedBodies);
+        t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println("Done1" +":"+ t3/10000);
 
-        long t1, t2, t3;
+        /*long t1, t2, t3;
+        t1 = System.nanoTime();*/
         t1 = System.nanoTime();
-        int w = 0;
-        workers = 1;
+        for (Body body : bodies) {
+            body.resetForce();
+            if (body.inQuad(quad)) {
+                thetree.calculateForce(body);
+                //Calculate the new positions on a time step dt (1e11 here)
+                body.update(dt);
+            }
+        }
+       /* int w = 0;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {
             worker[i] = new BHWorker(workers, w, dt, bodies, thetree, quad);
             w += (bodies.length / workers);
             worker[i].start();
         }
-       // System.out.println("worker = " + worker[0].part +" " +  worker[1].part +" " + worker[2].part +" " + worker[3].part);
+        // System.out.println("worker = " + worker[0].part +" " +  worker[1].part +" " + worker[2].part +" " + worker[3].part);
 
         for (int i = 0; i < workers; i++) {
             worker[i].join();
-        }
-        workers =4;
+        }*/
         t2 = System.nanoTime();
         t3 = t2 - t1;
-        System.out.println("Done" +":"+ t3/1000000);
+        System.out.println("Done2" +":"+ t3/10000);
+        /*t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println("Done" +":"+ t3/1000000);*/
 
-        }
+    }
+
 
    /* public void forceMove(QuadTree qT, Quad quad){
 

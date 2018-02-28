@@ -15,7 +15,7 @@ public class Creation {
     Creation(int numberOfBodies, double sizeOfTheUniverse) {
 
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
-        int m = 1000;
+        int m = 10000;
         int p = 0;
         int v = 0;
         double mid = sizeOfTheUniverse/2;
@@ -101,7 +101,7 @@ public class Creation {
         Vector velocityVector = new Vector(velocity);
 
         //bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
-        bodies[1].setMass(50);
+       // bodies[1].setMass(50);
         //bodies[1].setVelocity(velocityVector);
 
 
