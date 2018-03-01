@@ -107,10 +107,12 @@ public class QuadTree {
         qWorker[1].setName("NE");
         qWorker[2].setName("SW");
         qWorker[3].setName("SE");*/
+       Semaphore semaphore = new Semaphore(1);
+
         int low = 0;
         BHWorker worker[] = new BHWorker[w];
         for (int i = 0; i < w; i++) {
-            worker[i] = new BHWorker(numSteps, w, low, dt, bodies, this, quad, qTArray[i], lock, barrier);
+            worker[i] = new BHWorker(semaphore, numSteps, w, low, dt, bodies, this, quad, qTArray[i], lock, barrier);
             low += (bodies.length / w);
             worker[i].setName(names[i]);
             worker[i].start();
@@ -239,11 +241,12 @@ public class QuadTree {
      * (If Theta is 0, then no internal node is treated as a single body)
      */
     public void calculateForce(Body body) {
-
         // if the node is external we calculates the forces the aggregated bodies applies on this body
         // bodies do not apply forces on them selves ans not from null
-        if (body == null || body.equals(aggregatedBodies))
+        if (body == null || body.equals(aggregatedBodies)){
             return;
+
+        }
 
         // if external: calculate the force applies to the body
         if (external()){
@@ -270,6 +273,7 @@ public class QuadTree {
                     southEast.calculateForce(body);
             }
         }
+
     }
 }
 

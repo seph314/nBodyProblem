@@ -11,14 +11,19 @@ public class Driver {
         int numWorkers = 4;
 
 
-        double sizeOfTheUniverse = 1200;
+        double sizeOfTheUniverse = 120;
         double[] startCoordinates = {sizeOfTheUniverse/2, sizeOfTheUniverse/2};
         boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
-        int dt = 2;
+        int dt = 4;
         long t1, t2, t3 = 0;
         int program = 4;
+        //54407585
+        //65161521
+        //65161521
+        //29.999999878210353
+        //29.999995990389838
        // while(program != 0){
            /* System.out.println("\n****** N-body problem ****** \n");
 
@@ -54,7 +59,7 @@ public class Driver {
             }*/
 
 
-            Creation creation = new Creation(gnumBodies, sizeOfTheUniverse); /* creates random sized bodies via the Creation constructor */
+            Creation creation = new Creation(gnumBodies, sizeOfTheUniverse, numSteps); /* creates random sized bodies via the Creation constructor */
             bodies = creation.getBodies(); /* get the bodies */
             forces = new Vector[gnumBodies]; /* a new force array with the length of tge bodies array */
             for (int i = 0; i < gnumBodies; i++)
@@ -119,7 +124,7 @@ public class Driver {
             }
 
            //prints last body
-      /*  System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
+/*        System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
         System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-2)].getVelocity()));
         System.out.println("mass: " + bodies[(bodies.length-2)].getMass());
 

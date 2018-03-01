@@ -12,18 +12,19 @@ public class Creation {
      *
      * @param numberOfBodies is the number of random bodies
      */
-    Creation(int numberOfBodies, double sizeOfTheUniverse) {
+    Creation(int numberOfBodies, double sizeOfTheUniverse, int numSteps) {
 
         bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
         int m = 10000;
-        int p = 0;
+        double p = 0;
         int v = 0;
         double mid = sizeOfTheUniverse/2;
+        double step = mid/numberOfBodies;
 
 
         for (int i = 0; i < numberOfBodies; i++) {
             m += 100;
-            p += 10;
+            p += step;
             v += 1;
 
             double mass = m;

@@ -57,6 +57,7 @@ public class Body {
 //    }
 
     public void update(double dt) {
+        System.out.println(this);
         double[] v;
         v = getVelocity();
         v[0] += dt * force.getX() / mass;
@@ -163,7 +164,7 @@ public class Body {
         double x[] = new double[2];
         double v[] = new double[2];
         x[0] = ((body.getXPosition() * body.getMass() + this.getXPosition() * this.getMass())) / mass;
-        x[1] = (body.getYPosition() * body.getMass() + this.getXPosition() * this.getMass()) / mass;
+        x[1] = (body.getYPosition() * body.getMass() + this.getYPosition() * this.getMass()) / mass;
         v[0] = this.getXVelocity();
         v[1] = this.getYVelocity();
         Vector pVector = new Vector(x);

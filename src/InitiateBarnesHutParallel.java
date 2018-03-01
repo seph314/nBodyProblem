@@ -38,6 +38,7 @@
  * * * * * * * * * * * * * * * * * */
 
 
+import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
@@ -89,14 +90,14 @@ public class InitiateBarnesHutParallel {
         long t1, t2, t3;
         t1 = System.nanoTime();
         thetree.threadQuads(bodies, workers, dt, numSteps);
-        t2 = System.nanoTime();
-        t3 = t2 - t1;
-        System.out.println("Done1" +":"+ t3/10000);
+        //t2 = System.nanoTime();
+        //t3 = t2 - t1;
+        //System.out.println("Done1" +":"+ t3/10000);
         //1375900.0
 
         /*long t1, t2, t3;
         t1 = System.nanoTime();*/
-        /*t1 = System.nanoTime();
+       /* t1 = System.nanoTime();
         for (Body body : bodies) {
             body.resetForce();
             if (body.inQuad(quad)) {
@@ -105,21 +106,21 @@ public class InitiateBarnesHutParallel {
                 body.update(dt);
             }
         }*/
-       /* int w = 0;
-        BHWorker worker[] = new BHWorker[workers];
-        for (int i = 0; i < workers; i++) {
-            worker[i] = new BHWorker(workers, w, dt, bodies, thetree, quad);
-            w += (bodies.length / workers);
-            worker[i].start();
-        }
-        // System.out.println("worker = " + worker[0].part +" " +  worker[1].part +" " + worker[2].part +" " + worker[3].part);
-
-        for (int i = 0; i < workers; i++) {
-            worker[i].join();
+       /* for (Body body : bodies) {
+            body.resetForce();
+            if (body.inQuad(quad)) {
+                thetree.calculateForce(body);
+                //Calculate the new positions on a time step dt (1e11 here)
+                body.update(dt);
+            }
         }*/
+
         t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("Done2" +":"+ t3/10000);
+        System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
+        System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
+        System.out.println("mass: " + bodies[(bodies.length-1)].getMass());
         /*t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("Done" +":"+ t3/1000000);*/
