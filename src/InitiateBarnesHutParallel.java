@@ -74,9 +74,9 @@ public class InitiateBarnesHutParallel {
 
 
         /* calculate forces */
-        for (int i = 0; i < numSteps; i++){
+        //for (int i = 0; i < numSteps; i++){
             quad = new Quad(startVector, sizeOfTheUniverse);
-            addforces(quad);}
+            addforces(quad);//}
 
     }
 
@@ -88,18 +88,15 @@ public class InitiateBarnesHutParallel {
         }*/
         long t1, t2, t3;
         t1 = System.nanoTime();
-        thetree.threadQuads(bodies, workers);
-        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northEast.aggregatedBodies);
-        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.northWest.aggregatedBodies);
-        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southWest.aggregatedBodies);
-        thetree.aggregatedBodies = thetree.aggregatedBodies.aggregate(thetree.southEast.aggregatedBodies);
+        thetree.threadQuads(bodies, workers, dt, numSteps);
         t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("Done1" +":"+ t3/10000);
+        //1375900.0
 
         /*long t1, t2, t3;
         t1 = System.nanoTime();*/
-        t1 = System.nanoTime();
+        /*t1 = System.nanoTime();
         for (Body body : bodies) {
             body.resetForce();
             if (body.inQuad(quad)) {
@@ -107,7 +104,7 @@ public class InitiateBarnesHutParallel {
                 //Calculate the new positions on a time step dt (1e11 here)
                 body.update(dt);
             }
-        }
+        }*/
        /* int w = 0;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {

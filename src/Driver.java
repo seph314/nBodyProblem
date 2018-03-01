@@ -5,7 +5,7 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 120;
+        int gnumBodies = 4;
         int numSteps = 1;//12000;
         double far = 0.5;
         int numWorkers = 4;
@@ -112,20 +112,20 @@ public class Driver {
 
 
             //prints body, velocity and mass;
-          /*  for (int i = 0; i<bodies.length; i++) {
+            for (int i = 0; i<bodies.length; i++) {
                 System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
                 System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
                 System.out.println("mass: " + bodies[i].getMass());
-            }*/
+            }
 
            //prints last body
-        System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
+      /*  System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
         System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-2)].getVelocity()));
         System.out.println("mass: " + bodies[(bodies.length-2)].getMass());
 
             System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
             System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
-            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());
+            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());*/
 
 
             System.out.println("\ngnumBodies = " + gnumBodies);

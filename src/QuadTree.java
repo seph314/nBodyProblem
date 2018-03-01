@@ -38,6 +38,7 @@
  * * * * * * * * * * * * * * * * * */
 
 
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -47,7 +48,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class QuadTree {
 
     /* a region that a tree represents */
-    private Quad quad;
+    public Quad quad;
 
     /* a aggregatedBodies */
     public Body aggregatedBodies;
@@ -78,14 +79,26 @@ public class QuadTree {
         this.theta = far;
     }
 
-    public void threadQuads(Body[] bodies, int w){
+    void reset(){
+        this.aggregatedBodies = null;
+        this.northWest = null;
+        this.northEast = null;
+        this.southWest = null;
+        this.southEast = null;
+    }
+
+    public void threadQuads(Body[] bodies, int w, int dt,int numSteps){
         ReentrantLock lock = new ReentrantLock();
-        aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
+        System.out.println("w = " + w);
+        CyclicBarrier barrier = new CyclicBarrier(w);
+       // aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
         this.northWest = new QuadTree(quad.northEast(), theta);
         this.northEast = new QuadTree(quad.northWest(), theta);
         this.southWest = new QuadTree(quad.southWest(), theta);
         this.southEast = new QuadTree(quad.southEast(), theta);
-        QuadWorker qWorker[] = new QuadWorker[w];
+        QuadTree[] qTArray = new QuadTree[]{northWest, northEast, southWest, southEast};
+        String[] names = new String[]{"NW", "NE", "SW", "SE"};
+       /* QuadWorker qWorker[] = new QuadWorker[w];
         qWorker[0] = new QuadWorker(northWest, bodies, this, lock);
         qWorker[1] = new QuadWorker(northEast, bodies, this, lock);
         qWorker[2] = new QuadWorker(southWest, bodies, this, lock);
@@ -93,15 +106,20 @@ public class QuadTree {
         qWorker[0].setName("NW");
         qWorker[1].setName("NE");
         qWorker[2].setName("SW");
-        qWorker[3].setName("SE");
+        qWorker[3].setName("SE");*/
+        int low = 0;
+        BHWorker worker[] = new BHWorker[w];
         for (int i = 0; i < w; i++) {
-            qWorker[i].start();
+            worker[i] = new BHWorker(numSteps, w, low, dt, bodies, this, quad, qTArray[i], lock, barrier);
+            low += (bodies.length / w);
+            worker[i].setName(names[i]);
+            worker[i].start();
         }
             try {
-                qWorker[0].join();
-                qWorker[1].join();
-                qWorker[2].join();
-                qWorker[3].join();
+                worker[0].join();
+                worker[1].join();
+                worker[2].join();
+                worker[3].join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -117,12 +135,12 @@ public class QuadTree {
                // System.out.println(Thread.currentThread() + "" + i);
                 build(bodies[i]);
 
-                /*lock.lock();
+                lock.lock();
                 if(root.aggregatedBodies == null)
                     root.aggregatedBodies = bodies[i];
                 else
                     root.aggregatedBodies = root.aggregatedBodies.aggregate(bodies[i]);
-                lock.unlock();*/
+                lock.unlock();
 
             }
 
