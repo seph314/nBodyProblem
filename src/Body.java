@@ -181,9 +181,9 @@ public class Body{
         v[1] = this.getYVelocity();
         Vector pVector = new Vector(x);
         Vector vVector = new Vector(v);
-        Body returnBody = new Body(pVector, vVector, mass);
-        System.out.println("returnBody = " + returnBody);
-        return returnBody;
+
+        System.out.println("body = " + body);
+        return new Body(pVector, vVector, mass);
     }
 
     public Body duplicate(Body body){

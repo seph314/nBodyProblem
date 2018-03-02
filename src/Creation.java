@@ -122,7 +122,7 @@ public class Creation {
             bodies[i+2] = new Body(positionVectorSW, velocityVectorSW, mass);
             bodies[i+3] = new Body(positionVectorSE, velocityVectorSE, mass);
         }
-        double mass = 10;
+        double mass = 100000;
 
 
         double px = mid;

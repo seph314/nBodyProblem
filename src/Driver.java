@@ -7,16 +7,16 @@ public class Driver {
     public static void main(String[] args) throws InterruptedException {
         int gnumBodies = 5;
         int numSteps = 1;//12000;
-        double far = 0.5;
+        double far = 0.0;
         int numWorkers = 4;
 
 
-        double sizeOfTheUniverse = 280/2;
+        double sizeOfTheUniverse = 180/2;
         double[] startCoordinates = {sizeOfTheUniverse/2, sizeOfTheUniverse/2};
         boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
-        int dt = 2;
+        int dt = 3;
         long t1, t2, t3 = 0;
         int program = 2;
         //54407585
@@ -141,7 +141,7 @@ public class Driver {
             System.out.println("The simulaiton took " + t3/1000000 + "ms");
 
 
-        //new Draw(bodies);
+        new Draw().updateMovement(bodies);
 
 
 
