@@ -57,8 +57,8 @@ public class BHWorker extends Thread{
                 }
 
             t2 = System.nanoTime();
-            t3 = t2 - t1;}
-            /*
+            t3 = t2 - t1;
+
             System.out.println("Done1" +":"+ t3/10000);
             try {
                 barrier.await();
@@ -67,6 +67,17 @@ public class BHWorker extends Thread{
             } catch (BrokenBarrierException e) {
                 e.printStackTrace();
             }
+            for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
+                // System.out.println(bodies[i].getXPosition() + ":" + bodies[i].getYPosition());
+                bodies[i].resetForces();
+                if (quad.contains(bodies[i])) {
+                    root.updateForce(bodies[i]);
+                    bodies[i].update();
+                }
+                }
+        }
+
+            /*
             for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
                 // System.out.println(bodies[i].getXPosition() + ":" + bodies[i].getYPosition());
                 bodies[i].resetForce();

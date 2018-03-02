@@ -62,6 +62,11 @@ public class Creation {
     }
 
     public void addForcesParallel(Quad quad, Body[] bodies){
+        for (Body body : bodies) {
+            System.out.println("\nBody " + body + "\npositionx: " + body.getPositionX()+ "positionx: " + body.getPositionY() );
+            System.out.println("velocityX: " + body.getVelocityX() + "velocityY: " + body.getVelocityY() );
+            System.out.println("mass: " + body.getMass());
+        }
         QuadTree tree = new QuadTree(quad);
         ReentrantLock lock = new ReentrantLock();
         CyclicBarrier barrier = new CyclicBarrier(numWorkers);
@@ -89,13 +94,13 @@ public class Creation {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (Body body : bodies) {
+        /*for (Body body : bodies) {
             if (quad.contains(body)) {
                 body.resetForces();
                 tree.updateForce(body);
                 body.update();
             }
-        }
+        }*/
 
         for (Body body : bodies) {
             System.out.println("\nBody " + body + "\npositionx: " + body.getPositionX()+ "positionx: " + body.getPositionY() );
