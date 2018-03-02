@@ -19,9 +19,13 @@ public class InitiateN2Seq{
 
     public void initiate(){
         SimulateN2Seq simulation = new SimulateN2Seq(bodies, numberOfBodies, dt, forces);
+        Draw draw = new Draw();
+
         try {
-            for(int i = 0; i < numSteps; i++)
-                simulation.time();
+            for(int i = 0; i < numSteps; i++) {
+                simulation.time(draw);
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -28,11 +28,12 @@ public class InitiateN2Parallel {
             w += (numberOfBodies / workers);
             worker[i].start();
         }
-        for (int i = 0; i < workers; i++)
+        for (int i = 0; i < workers; i++) {
             try {
                 worker[i].join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
     }
 }

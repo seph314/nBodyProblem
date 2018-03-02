@@ -11,23 +11,21 @@ class Draw extends JFrame {
     /**
      * Constructor
      */
-    Draw(Body[] bodies) {
-        this.bodies = bodies; /* get bodies */
+    Draw(/*Body[] bodies*/) {
+//        this.bodies = bodies; /* get bodies */
         this.setSize(800, 800); /* size of window */
         this.setTitle("Graphics simulation"); /* name of window */
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE); /* exit on close */
-        this.add(/*new DrawBody()*/drawBody, BorderLayout.CENTER);
-        this.setVisible(true); /* shows window */
+//        this.add(/*new DrawBody()*/drawBody, BorderLayout.CENTER);
+//        this.setVisible(true); /* shows window */
     }
 
-    public void setBodies(Body[] bodies) {
+
+
+    public void updateMovement(Body[] bodies) {
         this.bodies = bodies;
-    }
-
-    public void keepDrawing() {
         this.add(drawBody, BorderLayout.CENTER);
         this.setVisible(true); /* shows window */
-
     }
 
     /**
@@ -46,9 +44,8 @@ class Draw extends JFrame {
             /* draw all bodies */
             for (Body body : bodies) {
                 //graphics2D.fill(new Arc2D.Double(body.getXPosition() / 20, body.getYPosition() / 20, body.getMass() / 800, body.getMass() / 800, 360, 360, Arc2D.OPEN));
-                graphics2D.fill(new Arc2D.Double(body.getXPosition() / 2, body.getYPosition() / 2, body.getMass() / 80, body.getMass() / 80, 360, 360, Arc2D.OPEN));
+                graphics2D.fill(new Arc2D.Double(body.getXPosition() / 2, body.getYPosition() / 2, body.getMass() / 2e20, body.getMass() / 2e20, 360, 360, Arc2D.OPEN));
             }
-
         }
     }
 }

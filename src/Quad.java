@@ -90,8 +90,8 @@ public class Quad {
      * @return the new top left quadrant of this quad
      */
     public Quad northWest(){
-        double newX = center.getX() - length/4;
-        double newY = center.getY() + length/4;
+        double newX = center.getX() - length/4.0;
+        double newY = center.getY() + length/4.0;
         double newLength = length/2;
         double[] newCenter = {newX,newY};
         return new Quad(new Vector(newCenter), newLength);
@@ -101,8 +101,8 @@ public class Quad {
      * @return the new top right quadrant of this quad
      */
     public Quad northEast(){
-        double newX = center.getX() + length/4;
-        double newY = center.getY() + length/4;
+        double newX = center.getX() + length/4.0;
+        double newY = center.getY() + length/4.0;
         double newLength = length/2;
         double[] newCenter = {newX,newY};
         return new Quad(new Vector(newCenter), newLength);
@@ -112,8 +112,8 @@ public class Quad {
      * @return the new top right quadrant of this quad
      */
     public Quad southWest(){
-        double newX = center.getX() - length/4;
-        double newY = center.getY() - length/4;
+        double newX = center.getX() - length/4.0;
+        double newY = center.getY() - length/4.0;
         double newLength = length/2;
         double[] newCenter = {newX,newY};
         return new Quad(new Vector(newCenter), newLength);
@@ -123,8 +123,8 @@ public class Quad {
      * @return the new top right quadrant of this quad
      */
     public Quad southEast(){
-        double newX = center.getX() + length/4;
-        double newY = center.getY() - length/4;
+        double newX = center.getX() + length/4.0;
+        double newY = center.getY() - length/4.0;
         double newLength = length/2;
         double[] newCenter = {newX,newY};
         return new Quad(new Vector(newCenter), newLength);

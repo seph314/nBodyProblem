@@ -40,6 +40,7 @@
 
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -61,6 +62,8 @@ public class QuadTree {
 
     /* theta */
     private double theta;// = 0.0;
+
+    Semaphore semaphore = new Semaphore(1);
 
 
     /**
@@ -169,7 +172,6 @@ public class QuadTree {
             insert(body); // and insert it into the Tree
         }
         else if (external()) {
-
             insert(aggregatedBodies);
             insert(body);
 
@@ -240,39 +242,45 @@ public class QuadTree {
      * This value is called Theta. Large Theta increases speed and smaller Theta accuracy.
      * (If Theta is 0, then no internal node is treated as a single body)
      */
-    public void calculateForce(Body body) {
-        // if the node is external we calculates the forces the aggregated bodies applies on this body
-        // bodies do not apply forces on them selves ans not from null
-        if (body == null || body.equals(aggregatedBodies)){
-            return;
+    public synchronized void calculateForce(Body body) {
+        if (semaphore.tryAcquire()){
+            // if the node is external we calculates the forces the aggregated bodies applies on this body
+            // bodies do not apply forces on them selves ans not from null
+            if (body == null || body.equals(aggregatedBodies)){
+                return;
 
-        }
+            }
 
-        // if external: calculate the force applies to the body
-        if (external()){
-            //System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies.getMass() + " Body" + body.getMass());
-            body.addForce(aggregatedBodies);
-
-        }
-
-
-        else {
-            // if the body is far enough away, treat all nodes under this internal as the same Body
-            if (quad.getLength() / aggregatedBodies.calculateDistance(body) < theta) { //if this is true then the body is far away*/
+            // if external: calculate the force applies to the body
+            if (external()){
+                //System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies.getMass() + " Body" + body.getMass());
                 body.addForce(aggregatedBodies);
+
             }
-            // else run the same thing on each of the internal nodes children
+
+
             else {
-                if (northWest != null)
-                    northWest.calculateForce(body);
-                if (northEast != null)
-                    northEast.calculateForce(body);
-                if (southWest != null)
-                    southWest.calculateForce(body);
-                if (southEast != null)
-                    southEast.calculateForce(body);
+                // if the body is far enough away, treat all nodes under this internal as the same Body
+                if ((quad.getLength() / aggregatedBodies.calculateDistance(body)) < theta) { //if this is true then the body is far away*/
+                    body.addForce(aggregatedBodies);
+                }
+                // else run the same thing on each of the internal nodes children
+                else {
+                    if (northWest != null)
+                        northWest.calculateForce(body);
+                    if (northEast != null)
+                        northEast.calculateForce(body);
+                    if (southWest != null)
+                        southWest.calculateForce(body);
+                    if (southEast != null)
+                        southEast.calculateForce(body);
+                }
             }
+            semaphore.release();
         }
+
+
+
 
     }
 }

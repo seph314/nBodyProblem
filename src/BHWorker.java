@@ -55,18 +55,18 @@ public class BHWorker extends Thread{
                // System.out.println(bodies[i].getXPosition() + ":" + bodies[i].getYPosition());
                 bodies[i].resetForce();
                 if (bodies[i].inQuad(quad)) {
-                   try {
-                        if(i == 0)
-                            Thread.sleep(100);
-                        if(i == 1)
-                            Thread.sleep(200);
-                        if(i == 2)
-                            Thread.sleep(300);
-                        if(i == 3)
-                            Thread.sleep(400);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+//                   try {
+//                        if(i == 0)
+//                            Thread.sleep(100);
+//                        if(i == 1)
+//                            Thread.sleep(200);
+//                        if(i == 2)
+//                            Thread.sleep(300);
+//                        if(i == 3)
+//                            Thread.sleep(400);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                     root.calculateForce(bodies[i]);
                     bodies[i].update(dt);
                     System.out.println(Thread.currentThread() + "i:" + i + "part" + part);
