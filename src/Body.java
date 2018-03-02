@@ -1,9 +1,10 @@
+import java.util.Random;
 
-public class Body {
+public class Body{
 
     private Vector position;            /* position */
     private Vector velocity;            /* velocity */
-    private Vector force = new Vector(new double[]{0,0});
+    private Vector force;
 
     private double mass;                /* mass */
     private double G = 6.67e-11;  /* gravitational constant */
@@ -19,10 +20,15 @@ public class Body {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
+        this.force = new Vector(new double[]{0,0});
     }
 
     public void setMass(double mass) {
         this.mass = mass;
+    }
+
+    public Vector getForce() {
+        return force;
     }
 
     public void setVelocity(Vector velocity) {
@@ -33,18 +39,24 @@ public class Body {
         force.setCoordinates(new double[]{0,0});
     }
 
+    public void setForce(Vector force) {
+        this.force = force;
+    }
+
     public void addForce(Body b) {
 
-        double dx = b.getXPosition() - this.getXPosition(); //
+        double dx = b.getXPosition() - this.getXPosition();
         double dy = b.getYPosition() - this.getYPosition();
         double dist = Math.sqrt(dx * dx + dy * dy);
         double F = (G * this.mass * b.mass) / (dist * dist);
         double fx = force.getX();
         double fy = force.getY();
+
         fx += F * dx / dist;
         fy += F * dy / dist;
         double[] array = {fx, fy};
         this.force.setCoordinates(array);
+
     }
 //    public void addForce(Body b) {
 //        Body a = this;
@@ -169,7 +181,30 @@ public class Body {
         v[1] = this.getYVelocity();
         Vector pVector = new Vector(x);
         Vector vVector = new Vector(v);
+        Body returnBody = new Body(pVector, vVector, mass);
+        System.out.println("returnBody = " + returnBody);
+        return returnBody;
+    }
 
-        return new Body(pVector, vVector, mass);
+    public Body duplicate(Body body){
+        System.out.println("Vuff" + this.getXPosition() + this.getForce().getX());
+        double[] positionArray = {0, 0};
+        double[] velocityArray = {0, 0};
+        double[] forceArray = {0, 0};
+        Vector pos = new Vector(positionArray);
+        Vector vel = new Vector(velocityArray);
+        Body returnBody = new Body(pos, vel, 0);
+        returnBody.position.setCoordinates(this.position.getCoordinates());
+        returnBody.velocity.setCoordinates(this.velocity.getCoordinates());
+        returnBody.mass = mass;
+        returnBody.force = new Vector(forceArray);
+        System.out.println("mjaooo" + returnBody.getXPosition() + returnBody.getForce().getX());
+        return returnBody;
+    }
+    public int random(){
+        int max = 800;
+        int min = 500;
+        Random rand = new Random();
+        return rand.nextInt((max - min) + 1) + min;
     }
 }

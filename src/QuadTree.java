@@ -63,7 +63,6 @@ public class QuadTree {
     /* theta */
     private double theta;// = 0.0;
 
-    Semaphore semaphore = new Semaphore(1);
 
 
     /**
@@ -161,19 +160,32 @@ public class QuadTree {
 
         // if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here
         if (aggregatedBodies == null) {
+            System.out.println("A + B: " + aggregatedBodies +" = " + body);
             aggregatedBodies = body;
-           // System.out.println(Thread.currentThread() + "agg");
+            System.out.println(aggregatedBodies);
+            return;
         }
 
         // if the body is internal: update the center of mass and total mass
         // recursively insert the body into the matching Quadrant
-        else if (!external()) {
+        if (!external()) {
+            System.out.println("GOING IN " + aggregatedBodies);
             aggregatedBodies = aggregatedBodies.aggregate(body); // aggregate the body if it's internal
+            System.out.println("TURNED TO " + aggregatedBodies);
             insert(body); // and insert it into the Tree
         }
-        else if (external()) {
+        else {
+            northWest = new QuadTree(quad.northWest(), theta);
+            northEast = new QuadTree(quad.northEast(), theta);
+            southEast = new QuadTree(quad.southEast(), theta);
+            southWest = new QuadTree(quad.southWest(), theta);
+
+            System.out.println("aggregatedBodies going in!  " + aggregatedBodies);
             insert(aggregatedBodies);
             insert(body);
+            System.out.println("GOING IN 2:" + aggregatedBodies);
+            aggregatedBodies = aggregatedBodies.aggregate(body);
+            System.out.println("TURNED TO 2:" + aggregatedBodies);
 
         }
     }
@@ -197,34 +209,16 @@ public class QuadTree {
      */
     private void insert(Body body) {
         if (body.inQuad(quad.northWest())) {
-            if (this.northWest == null) {
-                this.northWest = new QuadTree(quad.northWest(), theta);
-            }
-             northWest.build(body);
+            northWest.build(body);
         }
-        else {
-            if (body.inQuad(quad.northEast())) {
-                if (this.northEast == null) {
-                    this.northEast = new QuadTree(quad.northEast(), theta);
-                }
-                northEast.build(body);
-            }
-            else {
-                if (body.inQuad(quad.southWest())) {
-                    if (this.southWest == null) {
-                        this.southWest = new QuadTree(quad.southWest(), theta);
-                    }
-                    southWest.build(body);
-                }
-                else{
-                    if (body.inQuad(quad.southEast())) {
-                        if (this.southEast == null) {
-                            this.southEast = new QuadTree(quad.southEast(), theta);
-                        }
-                        southEast.build(body);
-                    }
-                }
-            }
+        else if (body.inQuad(quad.northEast())) {
+            northEast.build(body);
+        }
+        else if (body.inQuad(quad.southWest())) {
+            southWest.build(body);
+        }
+        else if (body.inQuad(quad.southEast())) {
+            southEast.build(body);
         }
     }
 
@@ -242,8 +236,7 @@ public class QuadTree {
      * This value is called Theta. Large Theta increases speed and smaller Theta accuracy.
      * (If Theta is 0, then no internal node is treated as a single body)
      */
-    public synchronized void calculateForce(Body body) {
-        if (semaphore.tryAcquire()){
+    public void calculateForce(Body body) {
             // if the node is external we calculates the forces the aggregated bodies applies on this body
             // bodies do not apply forces on them selves ans not from null
             if (body == null || body.equals(aggregatedBodies)){
@@ -253,11 +246,12 @@ public class QuadTree {
 
             // if external: calculate the force applies to the body
             if (external()){
-                //System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies.getMass() + " Body" + body.getMass());
+//                System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies + " A-Force: " +  aggregatedBodies.getForce().getX() + "  .  Body = " + body +" B-Force: " +  body.getForce().getX());
                 body.addForce(aggregatedBodies);
+                System.out.println(Thread.currentThread() + "Body = " + body +" B-Force: " +  body.getForce().getX());
+
 
             }
-
 
             else {
                 // if the body is far enough away, treat all nodes under this internal as the same Body
@@ -276,8 +270,7 @@ public class QuadTree {
                         southEast.calculateForce(body);
                 }
             }
-            semaphore.release();
-        }
+
 
 
 

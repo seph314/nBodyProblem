@@ -26,6 +26,13 @@ public class Vector {
         return new Vector(coords);
     }
 
+    public double[] getCoordinates() {
+        double[] coords = new double[2];
+        coords[0] = coordinates[0];
+        coords[1] = coordinates[1];
+        return coords;
+    }
+
     /**
      * Calculates the dotProduct
      * of two Vectors a = [a1,a2,..,an] and b =[b1,b2,..,bn]
@@ -39,6 +46,7 @@ public class Vector {
         }
         return dotProduct;
     }
+
 
     /**
      * Calculates the magnitude
@@ -92,6 +100,7 @@ public class Vector {
     }
 
     public void setCoordinates(double[] coordinates) {
-        this.coordinates = coordinates;
+        this.coordinates[0] = coordinates[0];
+        this.coordinates[1] = coordinates[1];
     }
 }

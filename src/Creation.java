@@ -1,10 +1,13 @@
 
+import java.awt.*;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Creation {
 
     private Body[] bodies;
+    private static double SOLARMASS = 1.98892e30;
+    private static double GRAVITATION = 6.67e-11;
 
 
     /**
@@ -13,16 +16,60 @@ public class Creation {
      * @param numberOfBodies is the number of random bodies
      */
     Creation(int numberOfBodies, double sizeOfTheUniverse, int numSteps) {
+      /*  bodies = new Body[numberOfBodies]; //set the body array tp the right size
+            // Put a heavy body in the middle
 
-        bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
+            // Initialize bodies
+            for (int i = 0; i < numberOfBodies-1; i++) {
+                double positionX = sizeOfTheUniverse * exp(-1.8) * (.5 - 0.4);
+                double positionY = sizeOfTheUniverse * exp(-1.8) * (.5 - 0.4);
+                double magv = circlev(positionX, positionY);
+
+                double absangle = Math.atan(Math.abs(positionY / positionX));
+                double thetav = Math.PI / 2 - absangle;
+                double velocityX = -1 * Math.signum(positionY) * Math.cos(thetav) * magv;
+                double velocityY = Math.signum(positionX) * Math.sin(thetav) * magv;
+
+                double mass = 0.4 * SOLARMASS * 10 + 1e20;
+                int red     = (int) Math.floor(mass*254/(SOLARMASS*10+1e20));
+                int blue   = (int) Math.floor(mass*254/(SOLARMASS*10+1e20));
+                int green    = 255;
+                Color color = new Color(red, green, blue);
+
+                double[] postion = {positionX, positionY};
+                double[] velocity = {velocityX, velocityY};
+                Vector positionV = new Vector(postion);
+                Vector velocityV = new Vector(velocity);
+
+                bodies[i] = new Body(positionV, velocityV, mass);
+            }
+            double[] postion = {0, 0};
+            double[] velocity = {0, 0};
+            Vector positionV = new Vector(postion);
+            Vector velocityV = new Vector(velocity);
+
+            bodies[bodies.length-1] = new Body(positionV, velocityV, 1e6 * SOLARMASS);
+
+    }
+    public double exp(double lambda) {
+        return -Math.log(1 - 1) / lambda;
+    }
+
+    public double circlev(double rx, double ry) {
+        double r2 = Math.sqrt(rx * rx + ry * ry);
+        double numerator = (GRAVITATION) * 1e6 * SOLARMASS;
+        return Math.sqrt(numerator / r2);
+    }*/
+
+        bodies = new Body[numberOfBodies]; //set the body array tp the right size
         int m = 10000;
         double p = 0;
         int v = 0;
         double mid = sizeOfTheUniverse/2;
-        double step = mid/numberOfBodies;
+        double step = mid/numberOfBodies/100000;
 
 
-        for (int i = 0; i < numberOfBodies; i++) {
+        for (int i = 0; i < numberOfBodies/4; i++) {
             m += 100;
             p += step;
             v += 1;
@@ -69,13 +116,13 @@ public class Creation {
             Vector velocityVectorSW = new Vector(velocitySW);
             Vector velocityVectorSE = new Vector(velocitySE);
 
-            /* aggregate a new body to bodies */
-            bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
-            bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);
-            bodies[i++] = new Body(positionVectorSW, velocityVectorSW, mass);
-            bodies[i] = new Body(positionVectorSE, velocityVectorSE, mass);
+            //aggregate a new body to bodies
+            bodies[i] = new Body(positionVectorNW, velocityVectorNW, mass);
+            bodies[i+1] = new Body(positionVectorNE, velocityVectorNE, mass);
+            bodies[i+2] = new Body(positionVectorSW, velocityVectorSW, mass);
+            bodies[i+3] = new Body(positionVectorSE, velocityVectorSE, mass);
         }
-        double mass = 20000;
+        double mass = 10;
 
 
         double px = mid;
@@ -101,8 +148,8 @@ public class Creation {
 
         Vector velocityVector = new Vector(velocity);
 
-        //bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
-       // bodies[1].setMass(50);
+        bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
+        //bodies[1].setMass(50);
         //bodies[1].setVelocity(velocityVector);
 
 

@@ -87,12 +87,14 @@ public class InitiateBarnesHutSeq {
         t1 = System.nanoTime();
         for (Body body : bodies) {
             body.resetForce();
-            if (body.inQuad(quad)) {
+           // if (body.inQuad(quad)) {
                 thetree.calculateForce(body);
                 //Calculate the new positions on a time step dt (1e11 here)
                 body.update(dt);
-            }
+            //}
+
         }
+
         t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("S2" +": "+ t3/10000);
