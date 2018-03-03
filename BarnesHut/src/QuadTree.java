@@ -66,7 +66,6 @@ public class QuadTree {
             SE = new QuadTree(quad.SE()); 
             return this.SE;}
         else    {
-            System.out.println("Hej");  
             return null;
         }
     }

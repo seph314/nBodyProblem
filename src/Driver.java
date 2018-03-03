@@ -5,9 +5,9 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 5;
+        int gnumBodies = 240;
         int numSteps = 1;//12000;
-        double far = 0.0;
+        double far = 0.5;
         int numWorkers = 4;
 
 
@@ -16,9 +16,9 @@ public class Driver {
         boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
-        int dt = 3;
+        int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 2;
+        int program = 1;
         //54407585
         //65161521
         //65161521

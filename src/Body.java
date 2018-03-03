@@ -44,7 +44,7 @@ public class Body{
     }
 
     public void addForce(Body b) {
-
+        System.out.println("fårss: " );//+ force.getY());
         double dx = b.getXPosition() - this.getXPosition();
         double dy = b.getYPosition() - this.getYPosition();
         double dist = Math.sqrt(dx * dx + dy * dy);

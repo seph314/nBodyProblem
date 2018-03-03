@@ -69,10 +69,11 @@ public class Creation {
         double step = mid/numberOfBodies/100000;
 
 
-        for (int i = 0; i < numberOfBodies/4; i++) {
+        for (int i = 0; i < numberOfBodies; i++) {
             m += 100;
             p += step;
             v += 1;
+            int part =0;
 
             double mass = m;
 
@@ -117,10 +118,12 @@ public class Creation {
             Vector velocityVectorSE = new Vector(velocitySE);
 
             //aggregate a new body to bodies
-            bodies[i] = new Body(positionVectorNW, velocityVectorNW, mass);
-            bodies[i+1] = new Body(positionVectorNE, velocityVectorNE, mass);
-            bodies[i+2] = new Body(positionVectorSW, velocityVectorSW, mass);
-            bodies[i+3] = new Body(positionVectorSE, velocityVectorSE, mass);
+            System.out.println(i);
+
+            bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
+            bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);
+            bodies[i++] = new Body(positionVectorSW, velocityVectorSW, mass);
+            bodies[i] = new Body(positionVectorSE, velocityVectorSE, mass);
         }
         double mass = 100000;
 
@@ -148,7 +151,7 @@ public class Creation {
 
         Vector velocityVector = new Vector(velocity);
 
-        bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
+       // bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
         //bodies[1].setMass(50);
         //bodies[1].setVelocity(velocityVector);
 

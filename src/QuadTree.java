@@ -175,10 +175,6 @@ public class QuadTree {
             insert(body); // and insert it into the Tree
         }
         else {
-            northWest = new QuadTree(quad.northWest(), theta);
-            northEast = new QuadTree(quad.northEast(), theta);
-            southEast = new QuadTree(quad.southEast(), theta);
-            southWest = new QuadTree(quad.southWest(), theta);
 
             System.out.println("aggregatedBodies going in!  " + aggregatedBodies);
             insert(aggregatedBodies);
@@ -209,15 +205,19 @@ public class QuadTree {
      */
     private void insert(Body body) {
         if (body.inQuad(quad.northWest())) {
+            if (this.northWest==null) {this.northWest= new QuadTree(quad.northWest(), theta);}
             northWest.build(body);
         }
         else if (body.inQuad(quad.northEast())) {
+            if (this.northEast==null) {this.northEast= new QuadTree(quad.northEast(), theta);}
             northEast.build(body);
         }
         else if (body.inQuad(quad.southWest())) {
+            if (this.southWest==null) {this.southWest= new QuadTree(quad.southWest(), theta);}
             southWest.build(body);
         }
         else if (body.inQuad(quad.southEast())) {
+            if (this.southEast==null) {this.southEast= new QuadTree(quad.southEast(), theta);}
             southEast.build(body);
         }
     }
@@ -247,6 +247,7 @@ public class QuadTree {
             // if external: calculate the force applies to the body
             if (external()){
 //                System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies + " A-Force: " +  aggregatedBodies.getForce().getX() + "  .  Body = " + body +" B-Force: " +  body.getForce().getX());
+                System.out.println("aagggG!!! = " + aggregatedBodies);
                 body.addForce(aggregatedBodies);
                 System.out.println(Thread.currentThread() + "Body = " + body +" B-Force: " +  body.getForce().getX());
 

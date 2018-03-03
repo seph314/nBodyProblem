@@ -51,7 +51,7 @@ public class BHWorker extends Thread{
             } catch (BrokenBarrierException e) {
                 e.printStackTrace();
             }
-            for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
+           /* for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
                // System.out.println(bodies[i].getXPosition() + ":" + bodies[i].getYPosition());
                 bodies[i].resetForce();
                 if (bodies[i].inQuad(quad)) {
@@ -72,7 +72,7 @@ public class BHWorker extends Thread{
                     System.out.println(Thread.currentThread() + "i:" + i + "part" + part);
 
                 }
-            }
+            }*/
 
 
             try {
