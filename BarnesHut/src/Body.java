@@ -6,11 +6,12 @@ public class Body {
     private double dt;
     private double G = 6.67e-11;
 
-    public Body(double pX, double pY, double vX, double vY, double mass) {
+    public Body(double pX, double pY, double vX, double vY, double mass, double dt) {
         this.position = new Vector(pX, pY);
         this.velocity = new Vector(vX, vY);
         this.force = new Vector(0, 0);
         this.mass = mass;
+        this.dt = dt;
     }
 
     public Vector getPosition() {
@@ -50,7 +51,7 @@ public class Body {
         this.velocity.setX(x);
     }
     public void setVelocityY(double y) {
-        this.velocity.setX(y);
+        this.velocity.setY(y);
     }
 
     public Vector getForce() {
@@ -70,7 +71,7 @@ public class Body {
         this.force.setX(x);
     }
     public void setForceY(double y) {
-        this.force.setX(y);
+        this.force.setY(y);
     }
 
     public double getMass() {
@@ -102,7 +103,7 @@ public class Body {
         double x = (getPositionX() * getMass() + b.getPositionX() * b.getMass()) / m;
         double y = (getPositionY() * getMass() + b.getPositionY() * b.getMass()) / m;
 
-        return new Body(x, y, 0, 0, m);
+        return new Body(x, y, 0, 0, m, dt);
     }
 
     public void addForce(Body body) {

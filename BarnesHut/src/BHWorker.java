@@ -15,8 +15,9 @@ public class BHWorker extends Thread{
     CyclicBarrier barrier;
     int numSteps;
     Semaphore semaphore;
+    Creation creation;
 
-    public BHWorker(Semaphore semaphore, int numSteps, int workers, int part, double dt, Body[] bodies, QuadTree qT, Quad quad, QuadTree myQuad, ReentrantLock lock, CyclicBarrier barrier){
+    public BHWorker(Creation creation, Semaphore semaphore, int numSteps, int workers, int part, double dt, Body[] bodies, QuadTree qT, Quad quad, QuadTree myQuad, ReentrantLock lock, CyclicBarrier barrier){
         this.root = qT;
         this.quad = quad;
         this.bodies = bodies;
@@ -28,6 +29,7 @@ public class BHWorker extends Thread{
         this.barrier = barrier;
         this.numSteps = numSteps;
         this.semaphore = semaphore;
+        this.creation = creation;
     }
 
     public void run(){
@@ -36,30 +38,6 @@ public class BHWorker extends Thread{
 
 
         for (int step = 0; step < numSteps; step++) {
-
-            long t1, t2, t3;
-            t1 = System.nanoTime();
-            //myQuadTree.reset();
-            //myQuadTree.threadMagic(bodies, root, lock);
-            int n = bodies.length;
-            for (Body body : bodies) {
-                if (myQuadTree.quad.contains(body)){
-                    System.out.println(Thread.currentThread());
-                    myQuadTree.insert(body);}
-
-                    lock.lock();
-                    if(root.body == null)
-                        root.body = body;
-                    else
-                        root.body = root.body.add(body);
-                    lock.unlock();
-
-                }
-
-            t2 = System.nanoTime();
-            t3 = t2 - t1;
-
-            System.out.println("Done1" +":"+ t3/10000);
             try {
                 barrier.await();
             } catch (InterruptedException e) {
@@ -67,15 +45,56 @@ public class BHWorker extends Thread{
             } catch (BrokenBarrierException e) {
                 e.printStackTrace();
             }
-            for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
-                // System.out.println(bodies[i].getXPosition() + ":" + bodies[i].getYPosition());
-                bodies[i].resetForces();
-                if (quad.contains(bodies[i])) {
-                    root.updateForce(bodies[i]);
-                    bodies[i].update();
+
+            long t1, t2, t3;
+            t1 = System.nanoTime();
+            //myQuadTree.reset();
+            //myQuadTree.threadMagic(bodies, root, lock);
+            int n = bodies.length;
+            for (Body body : bodies) {
+                if (myQuadTree.quad.contains(body)) {
+                    //System.out.println(Thread.currentThread() + "  .X  " + body.getPositionX() + "  .Y  " + body.getPositionY());
+                    myQuadTree.insert(body);
                 }
-                }
+
+                lock.lock();
+                if (root.body == null)
+                    root.body = body;
+                else
+                    root.body = root.body.add(body);
+                lock.unlock();
+
+            }
+            try {
+                barrier.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+            if(part == 0){
+                addforces();
+                root.reset();
+                creation.newTree();
+            }
+            root = creation.shared;
+            myQuadTree = root.getMyQuadTree(Thread.currentThread().getName());
+            //myQuadTree.resetQuads();
+
+
         }
+    }
+
+        private void addforces(){
+        for (Body body : bodies) {
+            if (quad.contains(body)) {
+                body.resetForces();
+                root.updateForce(body);
+                body.update();
+            }
+        }
+    }
+}
 
             /*
             for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
@@ -116,6 +135,4 @@ public class BHWorker extends Thread{
         t3 = t2 - t1;
         System.out.println(currentThread() +":"+ t3/1000000);*/
 
-    }
-}
 

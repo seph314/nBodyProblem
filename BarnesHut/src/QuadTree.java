@@ -50,6 +50,25 @@ public class QuadTree {
             putBody(b);
             body = body.add(b);
         }
+
+    }
+    public QuadTree getMyQuadTree(String quadName){
+        if (quadName.equals("NW")){
+            NW = new QuadTree(quad.NW());
+            return this.NW;}
+        if (quadName.equals("NE")){
+            NE = new QuadTree(quad.NE());
+            return this.NE;}
+        if (quadName.equals("SW")){
+            SW = new QuadTree(quad.SW());
+            return this.SW;}
+        if (quadName.equals("SE")){
+            SE = new QuadTree(quad.SE()); 
+            return this.SE;}
+        else    {
+            System.out.println("Hej");  
+            return null;
+        }
     }
 
     private void putBody(Body b) {
@@ -98,5 +117,17 @@ public class QuadTree {
             }
         }
     }
+
+    public void reset(){
+        this.body = null;
+    }
+    public void resetQuads(){
+        body = null;
+        NW = null;
+        NE = null;
+        SW = null;
+        SE = null;
+    }
+
 
 }
