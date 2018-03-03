@@ -1,7 +1,7 @@
 public class Driver {
     public static void main(String[] args) {
         int gnumBodies = 8;
-        int numSteps = 12000;//12000;
+        int numSteps = 1;//12000;
         double far = 0.5;
         int numWorkers = 4;
         double dt = 2;

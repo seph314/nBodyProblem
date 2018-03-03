@@ -42,6 +42,7 @@ import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class InitiateBarnesHutParallel {
 
@@ -77,19 +78,44 @@ public class InitiateBarnesHutParallel {
         /* calculate forces */
         //for (int i = 0; i < numSteps; i++){
             quad = new Quad(startVector, sizeOfTheUniverse);
-            addforces(quad);//}
+            for(int i = 0; i < numSteps; i++)
+                addforces(quad);//}
 
     }
 
     public void addforces(Quad quad) throws InterruptedException {
         QuadTree thetree = new QuadTree(quad, far);
         // If the body is still on the screen, add it to the tree
-        /*for (int i = 0; i < bodies.length; i++) {
+        for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
-        }*/
+        }
         long t1, t2, t3;
         t1 = System.nanoTime();
-        thetree.threadQuads(bodies, workers, dt, numSteps);
+        ReentrantLock lock = new ReentrantLock();
+        CyclicBarrier barrier = new CyclicBarrier(workers);
+        /*thetree.northWest = new QuadTree(quad.northEast(), far);
+        thetree.northEast = new QuadTree(quad.northWest(), far);
+        thetree.southWest = new QuadTree(quad.southWest(), far);
+        thetree.southEast = new QuadTree(quad.southEast(), far); */
+        QuadTree[] qTArray = new QuadTree[]{thetree.northWest, thetree.northEast, thetree.southWest, thetree.southEast};
+        String[] names = new String[]{"NW", "NE", "SW", "SE"};
+        int low = 0;
+        BHWorker worker[] = new BHWorker[workers];
+        for (int i = 0; i < workers; i++) {
+            worker[i] = new BHWorker(numSteps, workers, i, dt, bodies, thetree, quad, qTArray[i], lock, barrier);
+            //low += (bodies.length / workers);
+            worker[i].setName(names[i]);
+            worker[i].start();
+        }
+        try {
+            worker[0].join();
+            worker[1].join();
+            worker[2].join();
+            worker[3].join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //thetree.threadQuads(bodies, workers, dt, numSteps);
         //t2 = System.nanoTime();
         //t3 = t2 - t1;
         //System.out.println("Done1" +":"+ t3/10000);
@@ -106,21 +132,21 @@ public class InitiateBarnesHutParallel {
                 body.update(dt);
             }
         }*/
-        for (Body body : bodies) {
+        /*for (Body body : bodies) {
             body.resetForce();
             if (body.inQuad(quad)) {
                 thetree.calculateForce(body);
                 //Calculate the new positions on a time step dt (1e11 here)
                 body.update(dt);
             }
-        }
+        }*/
 
         t2 = System.nanoTime();
         t3 = t2 - t1;
-        System.out.println("Done2" +":"+ t3/10000);
+        /*System.out.println("Done2" +":"+ t3/10000);
         System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
         System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
-        System.out.println("mass: " + bodies[(bodies.length-1)].getMass());
+        System.out.println("mass: " + bodies[(bodies.length-1)].getMass());*/
         /*t2 = System.nanoTime();
         t3 = t2 - t1;
         System.out.println("Done" +":"+ t3/1000000);*/

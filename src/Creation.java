@@ -66,7 +66,7 @@ public class Creation {
         double p = 0;
         int v = 0;
         double mid = sizeOfTheUniverse/2;
-        double step = mid/numberOfBodies/100000;
+        double step = mid/numberOfBodies/12000;
 
 
         for (int i = 0; i < numberOfBodies; i++) {

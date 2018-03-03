@@ -89,9 +89,8 @@ public class QuadTree {
         this.southEast = null;
     }
 
-    public void threadQuads(Body[] bodies, int w, int dt,int numSteps){
+   /* public void threadQuads(Body[] bodies, int w, int dt,int numSteps){
         ReentrantLock lock = new ReentrantLock();
-        System.out.println("w = " + w);
         CyclicBarrier barrier = new CyclicBarrier(w);
        // aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
         this.northWest = new QuadTree(quad.northEast(), theta);
@@ -108,7 +107,7 @@ public class QuadTree {
         qWorker[0].setName("NW");
         qWorker[1].setName("NE");
         qWorker[2].setName("SW");
-        qWorker[3].setName("SE");*/
+        qWorker[3].setName("SE");
        Semaphore semaphore = new Semaphore(1);
 
         int low = 0;
@@ -149,7 +148,7 @@ public class QuadTree {
             }
 
         }
-    }
+    }*/
 
     /**
      * Insert aggregatedBodies in tree
@@ -160,28 +159,21 @@ public class QuadTree {
 
         // if this node doesn't contain a aggregatedBodies, insert the new aggregatedBodies here
         if (aggregatedBodies == null) {
-            System.out.println("A + B: " + aggregatedBodies +" = " + body);
             aggregatedBodies = body;
-            System.out.println(aggregatedBodies);
             return;
         }
 
         // if the body is internal: update the center of mass and total mass
         // recursively insert the body into the matching Quadrant
         if (!external()) {
-            System.out.println("GOING IN " + aggregatedBodies);
             aggregatedBodies = aggregatedBodies.aggregate(body); // aggregate the body if it's internal
-            System.out.println("TURNED TO " + aggregatedBodies);
             insert(body); // and insert it into the Tree
         }
         else {
 
-            System.out.println("aggregatedBodies going in!  " + aggregatedBodies);
             insert(aggregatedBodies);
             insert(body);
-            System.out.println("GOING IN 2:" + aggregatedBodies);
             aggregatedBodies = aggregatedBodies.aggregate(body);
-            System.out.println("TURNED TO 2:" + aggregatedBodies);
 
         }
     }
@@ -247,9 +239,7 @@ public class QuadTree {
             // if external: calculate the force applies to the body
             if (external()){
 //                System.out.println(Thread.currentThread() + "aggregatedBodies = " + aggregatedBodies + " A-Force: " +  aggregatedBodies.getForce().getX() + "  .  Body = " + body +" B-Force: " +  body.getForce().getX());
-                System.out.println("aagggG!!! = " + aggregatedBodies);
                 body.addForce(aggregatedBodies);
-                System.out.println(Thread.currentThread() + "Body = " + body +" B-Force: " +  body.getForce().getX());
 
 
             }

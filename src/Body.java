@@ -44,7 +44,6 @@ public class Body{
     }
 
     public void addForce(Body b) {
-        System.out.println("fårss: " );//+ force.getY());
         double dx = b.getXPosition() - this.getXPosition();
         double dy = b.getYPosition() - this.getYPosition();
         double dist = Math.sqrt(dx * dx + dy * dy);
@@ -69,7 +68,6 @@ public class Body{
 //    }
 
     public void update(double dt) {
-        System.out.println(this);
         double[] v;
         v = getVelocity();
         v[0] += dt * force.getX() / mass;
@@ -182,12 +180,10 @@ public class Body{
         Vector pVector = new Vector(x);
         Vector vVector = new Vector(v);
 
-        System.out.println("body = " + body);
         return new Body(pVector, vVector, mass);
     }
 
     public Body duplicate(Body body){
-        System.out.println("Vuff" + this.getXPosition() + this.getForce().getX());
         double[] positionArray = {0, 0};
         double[] velocityArray = {0, 0};
         double[] forceArray = {0, 0};

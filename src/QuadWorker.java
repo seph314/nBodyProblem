@@ -15,8 +15,8 @@ public class QuadWorker extends Thread{
     }
 
     public void run() {
-        //System.out.println(Thread.currentThread());
-        qT.threadMagic(bodies, root, lock);
-        //System.out.println(Thread.currentThread() +"joinar");
+        /*//System.out.println(Thread.currentThread());
+        root.threadMagic(bodies, root, lock);
+        //System.out.println(Thread.currentThread() +"joinar");*/
     }
 }
