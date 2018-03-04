@@ -53,7 +53,6 @@ public class InitiateBarnesHutParallel {
     private int numSteps;
     private int workers;
     private CyclicBarrier barrier;
-    Thread thread;
     double sizeOfTheUniverse;
     double[] startCoordinates;
     public QuadTree shared;
