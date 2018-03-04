@@ -6,7 +6,6 @@ public class BHWorker extends Thread{
     QuadTree root;
     QuadTree myQuadTree;
     Quad quad;
-    InitiateBarnesHutParallel iBHP;
     Body[] bodies;
     double dt;
     int part;
@@ -14,44 +13,27 @@ public class BHWorker extends Thread{
     ReentrantLock lock;
     CyclicBarrier barrier;
     int numSteps;
+    InitiateBarnesHutParallel init;
 
-    public BHWorker(int numSteps, int workers, int part, double dt, Body[] bodies, QuadTree qT, Quad quad, QuadTree myQuad, ReentrantLock lock, CyclicBarrier barrier){
+    public BHWorker(InitiateBarnesHutParallel init, int numSteps, int workers, int part, double dt, Body[] bodies, QuadTree qT, Quad quad, ReentrantLock lock, CyclicBarrier barrier){
         this.root = qT;
         this.quad = quad;
         this.bodies = bodies;
         this.dt = dt;
         this.part = part;
         this.workers = workers;
-        this.myQuadTree = myQuad;
         this.lock = lock;
         this.barrier = barrier;
         this.numSteps = numSteps;
+        this.init = init;
     }
     public void run(){
-
-        for(int i = part; i < bodies.length; i+= workers){
-            bodies[i].resetForce();
-            if (bodies[i].inQuad(quad)) {
-                root.calculateForce(bodies[i]);
-                bodies[i].update(dt);
-            }
-        }
-
-    }
-}
-
-
-
-    /*public void run(){
-        //for (int step = 0; step < numSteps; step++) {
-            try {
-                barrier.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (BrokenBarrierException e) {
-                e.printStackTrace();
-            }
-
+        long t1, t2, t3 = 0;
+        try {
+        for (int step = 0; step < numSteps; step++) {
+            barrier.await();
+            myQuadTree = root.getMyQuadTree(Thread.currentThread().getName());
+            t1 = System.nanoTime();
             for (Body body : bodies) {
                 if (body.inQuad(quad)) myQuadTree.build(body);
 
@@ -63,28 +45,27 @@ public class BHWorker extends Thread{
                 lock.unlock();
 
             }
-            try {
-                barrier.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (BrokenBarrierException e) {
-                e.printStackTrace();
-            }
-           / if(part == 0){
-                addforces();
-            }
-        //}
-    }
-
-
-    private void addforces(){
-        for (Body body : bodies) {
-            body.resetForce();
-            if (body.inQuad(quad)) {
-                root.calculateForce(body);
-                //Calculate the new positions on a time step dt (1e11 here)
-                body.update(dt);
+            barrier.await();
+            t2 = System.nanoTime();
+            t3 = t2 - t1;
+            System.out.println("t3 = " + t3/1000000 + "ms");
+        for (int i = part; i < (part + (bodies.length / (double) workers)); i++) {
+            bodies[i].resetForce();
+            if (bodies[i].inQuad(quad)) {
+                root.calculateForce(bodies[i]);
+                bodies[i].update(dt);
             }
         }
-    }*/
-    //}
+            if(part == 0){
+                init.newTree();
+            }
+
+        }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+    }
+}

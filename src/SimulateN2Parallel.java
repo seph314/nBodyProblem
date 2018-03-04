@@ -35,6 +35,7 @@ public class SimulateN2Parallel {
     public void time(int w) throws InterruptedException {
 
         for (int step = 0; step < numSteps; step++) { // loops for each time step
+            //System.out.println(Thread.currentThread() + " w: " + w);
 
             for (int i = w; i < (w + (numberOfBodies / workers)); i++) // each worker works on its own part of the body array
                 for (int j = 0; j < numberOfBodies; j++) {

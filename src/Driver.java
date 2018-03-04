@@ -5,20 +5,20 @@ import java.util.concurrent.CyclicBarrier;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 120;
-        int numSteps = 9000;//12000;
+        int gnumBodies = 240;
+        int numSteps = 1;//11000;//12000;
         double far = 0.5;
         int numWorkers = 4;
 
 
-        double sizeOfTheUniverse = 1000;
+        double sizeOfTheUniverse = 5000000;
         double[] startCoordinates = {sizeOfTheUniverse/2, sizeOfTheUniverse/2};
         boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
-        int program = 1;
+        int program = 4;
         //54407585
         //65161521
         //65161521

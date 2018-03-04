@@ -267,6 +267,23 @@ public class QuadTree {
 
 
     }
+    public QuadTree getMyQuadTree(String quadName){
+        if (quadName.equals("NW")){
+            northWest = new QuadTree(quad.northWest(), theta);
+            return this.northWest;}
+        if (quadName.equals("NE")){
+            northEast = new QuadTree(quad.northEast(), theta);
+            return this.northEast;}
+        if (quadName.equals("SW")){
+            southWest = new QuadTree(quad.southWest(), theta);
+            return this.southWest;}
+        if (quadName.equals("SE")){
+            southEast = new QuadTree(quad.southEast(), theta);
+            return this.southEast;}
+        else    {
+            return null;
+        }
+    }
 }
 
 

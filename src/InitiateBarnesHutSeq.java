@@ -71,30 +71,19 @@ public class InitiateBarnesHutSeq {
 
     public void addforces(Quad quad) {
         QuadTree thetree = new QuadTree(quad, far);
-        // If the body is still on the screen, add it to the tree
-        long t1, t2, t3;
-        t1 = System.nanoTime();
         for (int i = 0; i < bodies.length; i++) {
             if (bodies[i].inQuad(quad)) thetree.build(bodies[i]);
         }
         //Now, use out methods in BHTree to update the forces,
         //traveling recursively through the tree
-        /*long t1, t2, t3;
-        t1 = System.nanoTime();*/
-        t1 = System.nanoTime();
         for (Body body : bodies) {
             body.resetForce();
-           // if (body.inQuad(quad)) {
+            if (body.inQuad(quad)) {
                 thetree.calculateForce(body);
-                //Calculate the new positions on a time step dt (1e11 here)
                 body.update(dt);
-            //}
-
         }
 
-        /*t2 = System.nanoTime();
-        t3 = t2 - t1;
-        System.out.println("SThread" +": "+ t3/1000000);*/
+    }
     }
 }
 
