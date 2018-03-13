@@ -62,7 +62,7 @@ public class Creation {
     }*/
 
         bodies = new Body[numberOfBodies]; //set the body array tp the right size
-        int m = 10000;
+        int m = 100;
         double p = 0;
         int v = 0;
         double mid = sizeOfTheUniverse/2;
@@ -70,7 +70,7 @@ public class Creation {
 
 
         for (int i = 0; i < numberOfBodies; i++) {
-            m += 100;
+           // m += 10;
             p += step;
             v += 1;
             int part =0;
@@ -118,7 +118,7 @@ public class Creation {
             Vector velocityVectorSE = new Vector(velocitySE);
 
             //aggregate a new body to bodies
-            System.out.println(i);
+           // System.out.println(i);
 
             bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
             bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);

@@ -1,11 +1,11 @@
 public class Driver {
     public static void main(String[] args) {
-        int gnumBodies = 8;
-        int numSteps = 1;//12000;
+        int gnumBodies = 120;
+        int numSteps = 10;//12000;
         double far = 0.5;
         int numWorkers = 4;
         double dt = 2;
-        double sizeOfTheUniverse = 1e11;
+        double sizeOfTheUniverse = 200000;
         int program = 2;
 
 

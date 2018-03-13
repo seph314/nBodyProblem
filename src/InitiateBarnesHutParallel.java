@@ -73,11 +73,14 @@ public class InitiateBarnesHutParallel {
     }
 
     public void buildQuadTree() throws InterruptedException {
+        //for (int i = 0; i < numSteps; i++)
                 addforces(quad);//}
 
     }
 
     public void addforces(Quad quad) throws InterruptedException {
+        long t1, t2, t3 = 0;
+        t1 = System.nanoTime();
         ReentrantLock lock = new ReentrantLock();
         CyclicBarrier barrier = new CyclicBarrier(workers);
         String[] names = new String[]{"NW", "NE", "SW", "SE"};
@@ -90,13 +93,14 @@ public class InitiateBarnesHutParallel {
             worker[i].start();
         }
         try {
-            worker[0].join();
-            worker[1].join();
-            worker[2].join();
-            worker[3].join();
+            for (int i = 0; i < workers; i++) {
+            worker[i].join(); }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        t2 = System.nanoTime();
+        t3 = t2 - t1;
+        System.out.println("t3 - 2 -  = " + t3);
 
     }
    public void newTree(){

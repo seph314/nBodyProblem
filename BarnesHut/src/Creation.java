@@ -47,16 +47,58 @@ public class Creation {
         }
         Body body = new Body(0, 0, 0, 0, 1e6 * SOLARMASS, dt);
         bodies[0] = body;*/
-        Body[] bodies = new Body[gnumBodies];
-        bodies[0] = new Body(0.01, 0.01, 0.0, 0.0, 1.98892E36, dt);
-        bodies[1] = new Body(-9.7931852131575E8, -1.0181952999165366E9, 2.2086002273093686E8, -2.1242713543890244E8, 1.1296817349602967E31, dt);
-        bodies[2] = new Body(-1.3002285403837226E8, -2.125995429661797E9, 2.4910036673933232E8, -1.523462382541696E7, 1.8226506438833028E31, dt);
-        bodies[3] = new Body(1.947171244218845E9, -1.3373505917622253E10, 9.804289233273485E7, 1.4274962887539351E7, 2.6732587866773563E30, dt);
-        bodies[4] = new Body(-5.003529277153006E9, 1.2495325098504513E10, -9.21631266051269E7, -3.6905074386412136E7, 1.8731817248339255E31, dt);
-        bodies[5] = new Body(7.756319974536308E9, -1.0446708649255674E9, 1.7378477254364368E7, 1.2902918496215086E8, 6.594601312440683E30, dt);
-        bodies[6] = new Body(1.4081704597265278E10, -3.322214510147346E9, 2.198737000752703E7, 9.31967663048446E7, 8.841727217288336E30, dt);
-        bodies[7] = new Body(5.164267886672828E10, 1.9893594519048283E9, -1950242.9146291981, 5.062723504084273E7, 6.859491236797967E30, dt);
+//        Body[] bodies = new Body[gnumBodies];
+//        bodies[0] = new Body(0.01, 0.01, 0.0, 0.0, 1.98892E36, dt);
+//        bodies[1] = new Body(-9.7931852131575E8, -1.0181952999165366E9, 2.2086002273093686E8, -2.1242713543890244E8, 1.1296817349602967E31, dt);
+//        bodies[2] = new Body(-1.3002285403837226E8, -2.125995429661797E9, 2.4910036673933232E8, -1.523462382541696E7, 1.8226506438833028E31, dt);
+//        bodies[3] = new Body(1.947171244218845E9, -1.3373505917622253E10, 9.804289233273485E7, 1.4274962887539351E7, 2.6732587866773563E30, dt);
+//        bodies[4] = new Body(-5.003529277153006E9, 1.2495325098504513E10, -9.21631266051269E7, -3.6905074386412136E7, 1.8731817248339255E31, dt);
+//        bodies[5] = new Body(7.756319974536308E9, -1.0446708649255674E9, 1.7378477254364368E7, 1.2902918496215086E8, 6.594601312440683E30, dt);
+//        bodies[6] = new Body(1.4081704597265278E10, -3.322214510147346E9, 2.198737000752703E7, 9.31967663048446E7, 8.841727217288336E30, dt);
+//        bodies[7] = new Body(5.164267886672828E10, 1.9893594519048283E9, -1950242.9146291981, 5.062723504084273E7, 6.859491236797967E30, dt);
 
+        Body[] bodies = new Body[gnumBodies];
+        int m = 100;
+        double p = 0;
+        int v = 0;
+        double mid = sizeOfTheUniverse/2;
+        double step = mid/gnumBodies/12000;
+
+        for (int i = 0; i < gnumBodies; i++) {
+            // m += 10;
+            p += step;
+            v += 1;
+            int part =0;
+
+            double mass = m;
+
+            double NWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+
+            double NWpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+
+            double NWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+
+            double NWvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NEvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SWvy = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double SEvy = - v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            //aggregate a new body to bodies
+            System.out.println(i);
+
+            bodies[i++] = new Body(NWpx, NWpy, NWvx, NWvy, mass, dt);
+            bodies[i++] = new Body(NEpx, NEpy, NEvx, NEvy, mass, dt);
+            bodies[i++] = new Body(SWpx, SWpy, SWvx, SWvy, mass, dt);
+              bodies[i] = new Body(SEpx, SEpy, SEvx, SEvy, mass, dt);
+        }
 
 
         long t1, t2, t3;
