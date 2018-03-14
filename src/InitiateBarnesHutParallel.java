@@ -40,7 +40,7 @@
 
 import java.util.concurrent.CyclicBarrier;
 
-public class InitiateBarnesHutParallel {
+class InitiateBarnesHutParallel {
 
 
     private Body[] bodies;
@@ -48,58 +48,44 @@ public class InitiateBarnesHutParallel {
     private double far;
     private int numSteps;
     private int workers;
-    private CyclicBarrier barrier;
-    private double sizeOfTheUniverse;
-    private double[] startCoordinates;
     private QuadTree shared;
     private Quad quad;
 
-    public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers, double sizeOfTheUniverse,  double[] startCoordinates) {
+    InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers, double sizeOfTheUniverse, double[] startCoordinates) {
         this.bodies = bodies;
         this.dt = dt;
         this.far = far;
         this.numSteps = numSteps;
         this.workers = numWorkers;
-        barrier = new CyclicBarrier(numWorkers);
-        this.sizeOfTheUniverse = sizeOfTheUniverse;
-        this.startCoordinates = startCoordinates;
         Vector startVector = new Vector(startCoordinates);
         this.quad = new Quad(startVector, sizeOfTheUniverse);
         this.shared = new QuadTree(quad, far);
     }
 
-    public QuadTree getShared() {
+    QuadTree getShared() {
         return shared;
     }
 
-    public void buildQuadTree() throws InterruptedException {
-                addforces(quad);
-
-    }
-
-    public void addforces(Quad quad) throws InterruptedException {
-        long t1, t2, t3 = 0;
-        t1 = System.nanoTime();
+    void buildQuadTree() throws InterruptedException {
         CyclicBarrier barrier = new CyclicBarrier(workers);
         int low = 0;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {
-            worker[i] = new BHWorker(this, numSteps, workers, low, dt, bodies, shared, quad, barrier);
+            worker[i] = new BHWorker(this, numSteps, workers, low, dt, bodies, shared, barrier);
             low += (bodies.length / workers);
             worker[i].start();
         }
         try {
             for (int i = 0; i < workers; i++) {
-            worker[i].join(); }
+                worker[i].join();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        t2 = System.nanoTime();
-        t3 = t2 - t1;
-        System.out.println("t3 - 2 -  = " + t3);
 
     }
-   public void newTree(){
-       this.shared = new QuadTree(quad, far);
-   }
+
+    void newTree() {
+        this.shared = new QuadTree(quad, far);
+    }
 }

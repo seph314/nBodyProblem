@@ -5,6 +5,7 @@ public class Vector {
 
     /**
      * Vector Constructor
+     *
      * @param input is input coordinates
      */
     Vector(double[] input) {
@@ -15,10 +16,11 @@ public class Vector {
 
     /**
      * Calculates the Scalar Product
-     * @param s
-     * @return
+     *
+     * @param s the point used for calulation
+     * @return resulting scalar product cordinate.
      */
-    public Vector scalarProduct(double s) {
+    Vector scalarProduct(double s) {
         double[] coords = new double[vectorLength];
         for (int i = 0; i < vectorLength; i++) {
             coords[i] = s * coordinates[i];
@@ -26,22 +28,17 @@ public class Vector {
         return new Vector(coords);
     }
 
-    public double[] getCoordinates() {
-        double[] coords = new double[2];
-        coords[0] = coordinates[0];
-        coords[1] = coordinates[1];
-        return coords;
-    }
 
     /**
      * Calculates the dotProduct
      * of two Vectors a = [a1,a2,..,an] and b =[b1,b2,..,bn]
      * as a1*b1 + a2*b2 + ... + an*bn
+     *
      * @return dotProduct
      */
-    public double dotProduct(Vector argumentVector){
+    private double dotProduct(Vector argumentVector) {
         double dotProduct = 0;
-        for (int i = 0; i< vectorLength; i++){
+        for (int i = 0; i < vectorLength; i++) {
             dotProduct += coordinates[i] * argumentVector.coordinates[i];
         }
         return dotProduct;
@@ -51,18 +48,20 @@ public class Vector {
     /**
      * Calculates the magnitude
      * To do this we find the hypotenuse h och the triangle x,y,h
-     * @return
+     *
+     * @return magnitude of two vectors
      */
-    public double magnitude(){
+    double magnitude() {
         return Math.sqrt(this.dotProduct(this));
     }
 
     /**
      * Calculates the aggregate of two vectors
-     * @param argumentVector
-     * @return
+     *
+     * @param argumentVector vector to add
+     * @return resulting coordinates
      */
-    public Vector add(Vector argumentVector){
+    Vector add(Vector argumentVector) {
         double[] resultCoordinates = new double[vectorLength];
         for (int i = 0; i < vectorLength; i++) {
             resultCoordinates[i] = coordinates[i] + argumentVector.coordinates[i];
@@ -72,11 +71,11 @@ public class Vector {
 
     /**
      * Calculates subtract of two vectors
-     * TODO double check this implementation
-     * @param argumentsVector
-     * @return
+     *
+     * @param argumentsVector vector to subtract
+     * @return resulting vector
      */
-    public Vector subtract(Vector argumentsVector){
+    Vector subtract(Vector argumentsVector) {
         double[] resultCoordinates = new double[vectorLength];
         for (int i = 0; i < vectorLength; i++) {
             resultCoordinates[i] = coordinates[i] - argumentsVector.coordinates[i];
@@ -86,20 +85,22 @@ public class Vector {
 
     /**
      * Calculates Direction
-     * @returna vector with the same direction as this vector
+     *
+     * @return vector with the same direction as this vector
      */
-    public Vector direction(){
-        return this.scalarProduct(1/this.magnitude());
+    Vector direction() {
+        return this.scalarProduct(1 / this.magnitude());
     }
 
-    public double getX() {
+    double getX() {
         return coordinates[0];
     }
-    public double getY() {
+
+    double getY() {
         return coordinates[1];
     }
 
-    public void setCoordinates(double[] coordinates) {
+    void setCoordinates(double[] coordinates) {
         this.coordinates[0] = coordinates[0];
         this.coordinates[1] = coordinates[1];
     }

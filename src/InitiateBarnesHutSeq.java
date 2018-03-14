@@ -37,16 +37,16 @@
  * *                              * *
  * * * * * * * * * * * * * * * * * */
 
-public class InitiateBarnesHutSeq {
+class InitiateBarnesHutSeq {
 
     private Body[] bodies;
     private int dt;
     private double far;
     private int numSteps;
-    double sizeOfTheUniverse;
-    double[] startCoordinates;
+    private double sizeOfTheUniverse;
+    private double[] startCoordinates;
 
-    public InitiateBarnesHutSeq(Body[] bodies, int dt, double far, int numSteps, double sizeOfTheUniverse,  double[] startCoordinates) {
+    InitiateBarnesHutSeq(Body[] bodies, int dt, double far, int numSteps, double sizeOfTheUniverse, double[] startCoordinates) {
         this.bodies = bodies;
         this.dt = dt;
         this.far = far;
@@ -55,31 +55,33 @@ public class InitiateBarnesHutSeq {
         this.startCoordinates = startCoordinates;
     }
 
-    public void buildQuadTree() {
+    void buildQuadTree() {
 
         Vector startVector = new Vector(startCoordinates);
 
-        /* create new Quad */
+        //create new Quad
         Quad quad = new Quad(startVector, sizeOfTheUniverse);
 
-        /* calculate forces */
-            addforces(quad);
+        // calculate forces
+        addforces(quad);
 
     }
 
-    public void addforces(Quad quad) {
-        for (int step = 0; step < numSteps; step++){
-        QuadTree thetree = new QuadTree(quad, far);
-        for (int i = 0; i < bodies.length; i++) {
-            thetree.build(bodies[i]);
-        }
-        //Now, use out methods in BHTree to update the forces,
-        //traveling recursively through the tree
-        for (Body body : bodies) {
-            body.resetForce();
+    private void addforces(Quad quad) {
+
+        //Generates tree from bodies.
+        for (int step = 0; step < numSteps; step++) {
+            QuadTree thetree = new QuadTree(quad, far);
+            for (Body body1 : bodies) {
+                thetree.build(body1);
+            }
+
+            //Calculates forces on bodies in tree.
+            for (Body body : bodies) {
+                body.resetForce();
                 thetree.calculateForce(body);
                 body.update(dt);
-        }
+            }
 
         }
     }

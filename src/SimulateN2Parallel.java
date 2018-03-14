@@ -1,17 +1,15 @@
-import java.awt.*;
-import java.util.Arrays;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
-public class SimulateN2Parallel {
+class SimulateN2Parallel {
 
-    int workers;
-    CyclicBarrier barrier;
+    private int workers;
+    private CyclicBarrier barrier;
     Body[] bodies;
-    int numberOfBodies;
+    private int numberOfBodies;
     int dt;
-    Vector forces[];
-    int numSteps;
+    private Vector forces[];
+    private int numSteps;
 
     /**
      * Constructor
@@ -19,7 +17,7 @@ public class SimulateN2Parallel {
      * @param bodies is our array of bodies
      * @param dt     is the increase in time
      */
-    public SimulateN2Parallel(int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector[] forces, int numSteps) {
+    SimulateN2Parallel(int workers, CyclicBarrier barrier, Body[] bodies, int numberOfBodies, int dt, Vector[] forces, int numSteps) {
         this.workers = workers;
         this.barrier = barrier;
         this.bodies = bodies;
@@ -32,10 +30,10 @@ public class SimulateN2Parallel {
     /**
      * Simulates what happens to the bodies over time
      */
-    public void time(int w) throws InterruptedException {
+    void time(int w) throws InterruptedException {
 
         for (int step = 0; step < numSteps; step++) { // loops for each time step
-            //System.out.println(Thread.currentThread() + " w: " + w);
+
 
             for (int i = w; i < (w + (numberOfBodies / workers)); i++) // each worker works on its own part of the body array
                 for (int j = 0; j < numberOfBodies; j++) {
@@ -49,12 +47,8 @@ public class SimulateN2Parallel {
                 e.printStackTrace();
             }
 
-            // while (true){
-            //draw.setBodies(bodies);
-            //draw.updateMovement();
-            //new Draw(bodies);
             for (int i = w; i < (w + (numberOfBodies / workers)); i++) {
-                bodies[i].movePoints(forces[i], dt); /* move all points */
+                bodies[i].moveBodies(forces[i], dt); // move all bodies assigned to this thread.
             }
 
             try {

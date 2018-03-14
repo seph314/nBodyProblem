@@ -1,13 +1,13 @@
 import java.util.Random;
 
-public class Body{
+public class Body {
 
-    private Vector position;            /* position */
-    private Vector velocity;            /* velocity */
+    private Vector position;            //position
+    private Vector velocity;            //velocity
     private Vector force;
 
-    private double mass;                /* mass */
-    private double G = 6.67e-11;  /* gravitational constant */
+    private double mass;                //mass
+    private double G = 6.67e-11;  // gravitational constant
 
     /**
      * Body Constructor
@@ -20,14 +20,14 @@ public class Body{
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
-        this.force = new Vector(new double[]{0,0});
+        this.force = new Vector(new double[]{0, 0});
     }
 
     public void setMass(double mass) {
         this.mass = mass;
     }
 
-    public Vector getForce() {
+    private Vector getForce() {
         return force;
     }
 
@@ -35,15 +35,15 @@ public class Body{
         this.velocity = velocity;
     }
 
-    public void resetForce() {
-        force.setCoordinates(new double[]{0,0});
+    void resetForce() {
+        force.setCoordinates(new double[]{0, 0});
     }
 
     public void setForce(Vector force) {
         this.force = force;
     }
 
-    public void addForce(Body b) {
+    void addForce(Body b) {
         double dx = b.getXPosition() - this.getXPosition();
         double dy = b.getYPosition() - this.getYPosition();
         double dist = Math.sqrt(dx * dx + dy * dy);
@@ -58,7 +58,7 @@ public class Body{
 
     }
 
-    public void update(double dt) {
+    void update(double dt) {
         double[] v;
         v = getVelocity();
         v[0] += dt * force.getX() / mass;
@@ -81,16 +81,16 @@ public class Body{
      * @param force is the force
      * @param dt    is a small time step
      */
-    public void movePoints(Vector force, double dt) {
+    void moveBodies(Vector force, double dt) {
         Vector acceleration = force.scalarProduct(1 / mass);
-        velocity = velocity.add(acceleration.scalarProduct(dt));   /* dv = f/m * DT */
-        position = position.add(velocity.scalarProduct(dt));       /* dp = (v + dv/2) * DT */
+        velocity = velocity.add(acceleration.scalarProduct(dt));   // dv = f/m * DT
+        position = position.add(velocity.scalarProduct(dt));       // dp = (v + dv/2)
     }
 
     /**
      * calculate total force for two pair of bodies
      */
-    public Vector calculateForces(Body otherBody) {
+    Vector calculateForces(Body otherBody) {
         Vector delta = otherBody.position.subtract(this.position);
         double distance = delta.magnitude();
         double force = (G * this.mass * otherBody.mass) / (distance * distance); // Newtons law of Gravity F = G * m1 * m2 / r 2
@@ -103,41 +103,41 @@ public class Body{
      * @param body is the other body
      * @return distance
      */
-    public double calculateDistance(Body body) {
+    double calculateDistance(Body body) {
         double dx = this.position.getX() - body.position.getX();
         double dy = this.position.getY() - body.position.getY();
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public double[] getPosition() {
+    private double[] getPosition() {
         return position.coordinates;
     }
 
-    public double[] getVelocity() {
+    private double[] getVelocity() {
         return velocity.coordinates;
     }
 
-    public double getXVelocity() {
+    private double getXVelocity() {
         double[] array = velocity.coordinates;
         return array[0];
     }
 
-    public double getYVelocity() {
+    private double getYVelocity() {
         double[] array = velocity.coordinates;
         return array[1];
     }
 
-    public double getXPosition() {
+    double getXPosition() {
         double[] array = position.coordinates;
         return array[0];
     }
 
-    public double getYPosition() {
+    double getYPosition() {
         double[] array = position.coordinates;
         return array[1];
     }
 
-    public double getMass() {
+    private double getMass() {
         return mass;
     }
 
@@ -147,7 +147,7 @@ public class Body{
      * @param quad is the quadrant we are looking in
      * @return true if the body is there
      */
-    public boolean inQuad(Quad quad) {
+    boolean inQuad(Quad quad) {
         return quad.containsBody(this);
     }
 
@@ -158,7 +158,7 @@ public class Body{
      * @param body is the body we want to aggregate
      * @return the aggregated body
      */
-    public Body aggregate(Body body) {
+    Body aggregate(Body body) {
         double mass = this.mass + body.mass;
         double x[] = new double[2];
         double v[] = new double[2];
@@ -172,24 +172,4 @@ public class Body{
         return new Body(pVector, vVector, mass);
     }
 
-    public Body duplicate(Body body){
-        double[] positionArray = {0, 0};
-        double[] velocityArray = {0, 0};
-        double[] forceArray = {0, 0};
-        Vector pos = new Vector(positionArray);
-        Vector vel = new Vector(velocityArray);
-        Body returnBody = new Body(pos, vel, 0);
-        returnBody.position.setCoordinates(this.position.getCoordinates());
-        returnBody.velocity.setCoordinates(this.velocity.getCoordinates());
-        returnBody.mass = mass;
-        returnBody.force = new Vector(forceArray);
-        System.out.println("mjaooo" + returnBody.getXPosition() + returnBody.getForce().getX());
-        return returnBody;
-    }
-    public int random(){
-        int max = 800;
-        int min = 500;
-        Random rand = new Random();
-        return rand.nextInt((max - min) + 1) + min;
-    }
 }

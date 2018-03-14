@@ -1,21 +1,16 @@
 
-import java.awt.*;
-import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Creation {
 
     private Body[] bodies;
-    private static double SOLARMASS = 1.98892e30;
-    private static double GRAVITATION = 6.67e-11;
-
 
     /**
      * Creates bodies evenly distributed over the universe.
      *
      * @param numberOfBodies is the number of random bodies
+     * @param sizeOfTheUniverse is the size of the universe
      */
-    Creation(int numberOfBodies, double sizeOfTheUniverse, int numSteps) {
+    Creation(int numberOfBodies, double sizeOfTheUniverse) {
         bodies = new Body[numberOfBodies]; //set the body array tp the right size
         int m = 100;
         double p = 0;
@@ -26,9 +21,6 @@ public class Creation {
         for (int i = 0; i < numberOfBodies; i++) {
             p += step;
             v += 1;
-            int part =0;
-
-            double mass = m;
 
             double NWpx = mid - p;
             double NEpx = mid + p;
@@ -70,18 +62,14 @@ public class Creation {
             Vector velocityVectorSW = new Vector(velocitySW);
             Vector velocityVectorSE = new Vector(velocitySE);
 
-            bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
-            bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);
-            bodies[i++] = new Body(positionVectorSW, velocityVectorSW, mass);
-            bodies[i] = new Body(positionVectorSE, velocityVectorSE, mass);
+            bodies[i++] = new Body(positionVectorNW, velocityVectorNW, (double) m);
+            bodies[i++] = new Body(positionVectorNE, velocityVectorNE, (double) m);
+            bodies[i++] = new Body(positionVectorSW, velocityVectorSW, (double) m);
+            bodies[i] = new Body(positionVectorSE, velocityVectorSE, (double) m);
         }
 
     }
-    /**
-     * Getter that returns the bodies we created
-     *
-     * @return
-     */
+
     public Body[] getBodies() {
         return bodies;
     }

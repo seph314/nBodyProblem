@@ -53,7 +53,7 @@ public class Driver {
             }
 
 
-            Creation creation = new Creation(gnumBodies, sizeOfTheUniverse, numSteps); /* creates random sized bodies via the Creation constructor */
+            Creation creation = new Creation(gnumBodies, sizeOfTheUniverse); /* creates random sized bodies via the Creation constructor */
             bodies = creation.getBodies(); /* get the bodies */
             forces = new Vector[gnumBodies]; /* a new force array with the length of tge bodies array */
             for (int i = 0; i < gnumBodies; i++)
@@ -91,6 +91,7 @@ public class Driver {
                 t2 = System.nanoTime();
                 t3 = t2 - t1;
             }
+
 
             System.out.println("\ngnumBodies = " + gnumBodies);
             System.out.println("numSteps = " + numSteps);
