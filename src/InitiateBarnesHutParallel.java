@@ -38,11 +38,7 @@
  * * * * * * * * * * * * * * * * * */
 
 
-import java.util.Arrays;
-import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class InitiateBarnesHutParallel {
 
@@ -73,23 +69,19 @@ public class InitiateBarnesHutParallel {
     }
 
     public void buildQuadTree() throws InterruptedException {
-        //for (int i = 0; i < numSteps; i++)
-                addforces(quad);//}
+                addforces(quad);
 
     }
 
     public void addforces(Quad quad) throws InterruptedException {
         long t1, t2, t3 = 0;
         t1 = System.nanoTime();
-        ReentrantLock lock = new ReentrantLock();
         CyclicBarrier barrier = new CyclicBarrier(workers);
-        String[] names = new String[]{"NW", "NE", "SW", "SE"};
         int low = 0;
         BHWorker worker[] = new BHWorker[workers];
         for (int i = 0; i < workers; i++) {
-            worker[i] = new BHWorker(this, numSteps, workers, low, dt, bodies, shared, quad, lock, barrier);
+            worker[i] = new BHWorker(this, numSteps, workers, low, dt, bodies, shared, quad, barrier);
             low += (bodies.length / workers);
-            worker[i].setName(names[i]);
             worker[i].start();
         }
         try {

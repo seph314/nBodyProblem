@@ -71,26 +71,15 @@ public class InitiateBarnesHutSeq {
         for (int step = 0; step < numSteps; step++){
         QuadTree thetree = new QuadTree(quad, far);
         for (int i = 0; i < bodies.length; i++) {
-            //if (bodies[i].inQuad(quad))
             thetree.build(bodies[i]);
         }
         //Now, use out methods in BHTree to update the forces,
         //traveling recursively through the tree
         for (Body body : bodies) {
             body.resetForce();
-            //if (body.inQuad(quad)) {
                 thetree.calculateForce(body);
                 body.update(dt);
-            //}
         }
-
-//            for(int i = bodies.length-1; i >= 0; i--){
-//            bodies[i].resetForce();
-//            if(bodies[i].inQuad(quad)){
-//                thetree.calculateForce(bodies[i]);
-//                bodies[i].update(dt);
-//            }
-//            }
 
         }
     }
