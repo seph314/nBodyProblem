@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 1200000;
+        int gnumBodies = 120000;
         int numSteps = 1;
         double far = 0.5;
         int numWorkers = 4;
@@ -98,7 +98,6 @@ public class Driver {
             System.out.println("numWorkers = " + numWorkers);
             System.out.println("program = " + program);
             System.out.println("The simulaiton took " + t3);
-            System.out.println(bodies[119].getXPosition());
 
     }
     }
