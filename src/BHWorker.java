@@ -2,17 +2,17 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
 public class BHWorker extends Thread{
-    QuadTree root;
-    Quad quad;
-    Body[] bodies;
-    double dt;
-    int part;
-    int workers;
-    CyclicBarrier barrier;
-    int numSteps;
-    InitiateBarnesHutParallel init;
-    int numBodies;
-    int high;
+    private QuadTree root;
+    private Quad quad;
+    private Body[] bodies;
+    private double dt;
+    private int part;
+    private int workers;
+    private CyclicBarrier barrier;
+    private int numSteps;
+    private InitiateBarnesHutParallel init;
+    private int numBodies;
+    private int high;
 
     public BHWorker(InitiateBarnesHutParallel init, int numSteps, int workers, int part, double dt, Body[] bodies, QuadTree qT, Quad quad, CyclicBarrier barrier){
         this.root = qT;
@@ -29,30 +29,27 @@ public class BHWorker extends Thread{
 
     }
     public void run(){
-        long t1, t2, t3 = 0;
         try {
+
+            //Loops for as many steps given.
         for (int step = 0; step < numSteps; step++) {
-            t1 = System.nanoTime();
+
+            //Only one of the threads creates a new thread before new step.
             if(part == 0){
                 init.newTree();
                buildTree();
             }
 
             barrier.await();
-            root = init.shared;
+            root = init.getShared();
 
+            //Forces are calucalted in parallel with iterative parallelism. Every thread gets interavall to caluclate.
             for (int i = part; i < high; i++) {
-            bodies[i].resetForce();
+                bodies[i].resetForce();
                 root.calculateForce(bodies[i]);
                 bodies[i].update(dt);
-        }
-
+            }
             barrier.await();
-
-           t2 = System.nanoTime();
-            t3 = t2 - t1;
-           // System.out.println("t3P - 1 -  = " + t3);
-
         }
 
         } catch (InterruptedException e) {
@@ -62,9 +59,10 @@ public class BHWorker extends Thread{
         }
     }
 
+    //Builds tree
     private void buildTree(){
         for (int i = 0; i < numBodies; i++) {
-            init.shared.build(bodies[i]);
+            init.getShared().build(bodies[i]);
         }
     }
 

@@ -11,56 +11,11 @@ public class Creation {
 
 
     /**
-     * Creates a number of bodies with random values
+     * Creates bodies evenly distributed over the universe.
      *
      * @param numberOfBodies is the number of random bodies
      */
     Creation(int numberOfBodies, double sizeOfTheUniverse, int numSteps) {
-      /*  bodies = new Body[numberOfBodies]; //set the body array tp the right size
-            // Put a heavy body in the middle
-
-            // Initialize bodies
-            for (int i = 0; i < numberOfBodies-1; i++) {
-                double positionX = sizeOfTheUniverse * exp(-1.8) * (.5 - 0.4);
-                double positionY = sizeOfTheUniverse * exp(-1.8) * (.5 - 0.4);
-                double magv = circlev(positionX, positionY);
-
-                double absangle = Math.atan(Math.abs(positionY / positionX));
-                double thetav = Math.PI / 2 - absangle;
-                double velocityX = -1 * Math.signum(positionY) * Math.cos(thetav) * magv;
-                double velocityY = Math.signum(positionX) * Math.sin(thetav) * magv;
-
-                double mass = 0.4 * SOLARMASS * 10 + 1e20;
-                int red     = (int) Math.floor(mass*254/(SOLARMASS*10+1e20));
-                int blue   = (int) Math.floor(mass*254/(SOLARMASS*10+1e20));
-                int green    = 255;
-                Color color = new Color(red, green, blue);
-
-                double[] postion = {positionX, positionY};
-                double[] velocity = {velocityX, velocityY};
-                Vector positionV = new Vector(postion);
-                Vector velocityV = new Vector(velocity);
-
-                bodies[i] = new Body(positionV, velocityV, mass);
-            }
-            double[] postion = {0, 0};
-            double[] velocity = {0, 0};
-            Vector positionV = new Vector(postion);
-            Vector velocityV = new Vector(velocity);
-
-            bodies[bodies.length-1] = new Body(positionV, velocityV, 1e6 * SOLARMASS);
-
-    }
-    public double exp(double lambda) {
-        return -Math.log(1 - 1) / lambda;
-    }
-
-    public double circlev(double rx, double ry) {
-        double r2 = Math.sqrt(rx * rx + ry * ry);
-        double numerator = (GRAVITATION) * 1e6 * SOLARMASS;
-        return Math.sqrt(numerator / r2);
-    }*/
-
         bodies = new Body[numberOfBodies]; //set the body array tp the right size
         int m = 100;
         double p = 0;
@@ -68,34 +23,32 @@ public class Creation {
         double mid = sizeOfTheUniverse/2;
         double step = mid/numberOfBodies/12000;
 
-
         for (int i = 0; i < numberOfBodies; i++) {
-           // m += 10;
             p += step;
             v += 1;
             int part =0;
 
             double mass = m;
 
-            double NWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double NEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SWpx = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SEpx = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NWpx = mid - p;
+            double NEpx = mid + p;
+            double SWpx = mid - p;
+            double SEpx = mid + p;
 
-            double NWpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double NEpy = mid + p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SWpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SEpy = mid - p;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NWpy = mid + p;
+            double NEpy = mid + p;
+            double SWpy = mid - p;
+            double SEpy = mid - p;
 
-            double NWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double NEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SWvx = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SEvx = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NWvx = -v;
+            double NEvx = v;
+            double SWvx = -v;
+            double SEvx = v;
 
-            double NWvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double NEvy = v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SWvy = -v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
-            double SEvy = - v;// ThreadLocalRandom.current().nextInt(10, 100 + 1);
+            double NWvy = v;
+            double NEvy = v;
+            double SWvy = -v;
+            double SEvy = - v;
 
             double[] postionNW = {NWpx, NWpy};
             double[] postionNE = {NEpx, NEpy};
@@ -117,47 +70,13 @@ public class Creation {
             Vector velocityVectorSW = new Vector(velocitySW);
             Vector velocityVectorSE = new Vector(velocitySE);
 
-            //aggregate a new body to bodies
-           // System.out.println(i);
-
             bodies[i++] = new Body(positionVectorNW, velocityVectorNW, mass);
             bodies[i++] = new Body(positionVectorNE, velocityVectorNE, mass);
             bodies[i++] = new Body(positionVectorSW, velocityVectorSW, mass);
             bodies[i] = new Body(positionVectorSE, velocityVectorSE, mass);
         }
-        double mass = 100000;
-
-
-        double px = mid;
-
-
-        double py = mid;
-
-
-        double vx = 0;
-
-
-        double vy = 0;
-
-
-        double[] postion = {px, py};
-
-
-        double[] velocity = {vx, vy};
-
-
-        Vector positionVector = new Vector(postion);
-
-
-        Vector velocityVector = new Vector(velocity);
-
-       // bodies[bodies.length-1] = new Body(positionVector, velocityVector, mass);
-        //bodies[1].setMass(50);
-        //bodies[1].setVelocity(velocityVector);
-
 
     }
-
     /**
      * Getter that returns the bodies we created
      *
@@ -167,44 +86,4 @@ public class Creation {
         return bodies;
     }
 
-
-
-
-
-
-
-
-    /**
-     * Generates custom value bodies
-     */
-    Creation() {
-        Scanner scanner = new Scanner(System.in); /* create a Scanner */
-        System.out.print("Number of bodies: ");
-        int numberOfBodies = scanner.nextInt();
-        bodies = new Body[numberOfBodies]; /* set the body array tp the right size */
-
-        for (int i = 0; i < numberOfBodies; i++) {
-
-            /* read x and y values for the position- and velocity vector */
-            System.out.print("Body " + i + " px: ");
-            double px = scanner.nextDouble();
-            System.out.print("Body " + i + " py: ");
-            double py = scanner.nextDouble();
-            System.out.print("Body " + i + " vx: ");
-            double vx = scanner.nextDouble();
-            System.out.print("Body " + i + " vy: ");
-            double vy = scanner.nextDouble();
-            /* read mass*/
-            System.out.print("Body " + i + " mass: ");
-            double mass = scanner.nextDouble();
-            /* create position and velocity arrays */
-            double[] postion = {px, py};
-            double[] velocity = {vx, vy};
-            /* create position and velocity vectors */
-            Vector positionVector = new Vector(postion);
-            Vector velocityVector = new Vector(velocity);
-            /* aggregate a new body to bodies */
-            bodies[i] = new Body(positionVector, velocityVector, mass);
-        }
-    }
 }

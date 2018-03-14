@@ -49,16 +49,16 @@ import java.util.concurrent.locks.ReentrantLock;
 public class QuadTree {
 
     /* a region that a tree represents */
-    public Quad quad;
+    private Quad quad;
 
     /* a aggregatedBodies */
-    public Body aggregatedBodies;
+    private Body aggregatedBodies;
 
     /* child quadrants */
-    public QuadTree northWest;
-    public QuadTree northEast;
-    public QuadTree southWest;
-    public QuadTree southEast;
+    private QuadTree northWest;
+    private QuadTree northEast;
+    private QuadTree southWest;
+    private QuadTree southEast;
 
     /* theta */
     private double theta;// = 0.0;
@@ -89,66 +89,6 @@ public class QuadTree {
         this.southEast = null;
     }
 
-   /* public void threadQuads(Body[] bodies, int w, int dt,int numSteps){
-        ReentrantLock lock = new ReentrantLock();
-        CyclicBarrier barrier = new CyclicBarrier(w);
-       // aggregatedBodies = new Body(new Vector(new double[]{0,0}),new Vector(new double[]{0,0}), 0);
-        this.northWest = new QuadTree(quad.northEast(), theta);
-        this.northEast = new QuadTree(quad.northWest(), theta);
-        this.southWest = new QuadTree(quad.southWest(), theta);
-        this.southEast = new QuadTree(quad.southEast(), theta);
-        QuadTree[] qTArray = new QuadTree[]{northWest, northEast, southWest, southEast};
-        String[] names = new String[]{"NW", "NE", "SW", "SE"};
-       /* QuadWorker qWorker[] = new QuadWorker[w];
-        qWorker[0] = new QuadWorker(northWest, bodies, this, lock);
-        qWorker[1] = new QuadWorker(northEast, bodies, this, lock);
-        qWorker[2] = new QuadWorker(southWest, bodies, this, lock);
-        qWorker[3] = new QuadWorker(southEast, bodies, this, lock);
-        qWorker[0].setName("NW");
-        qWorker[1].setName("NE");
-        qWorker[2].setName("SW");
-        qWorker[3].setName("SE");
-       Semaphore semaphore = new Semaphore(1);
-
-        int low = 0;
-        BHWorker worker[] = new BHWorker[w];
-        for (int i = 0; i < w; i++) {
-            worker[i] = new BHWorker(semaphore, numSteps, w, low, dt, bodies, this, quad, qTArray[i], lock, barrier);
-            low += (bodies.length / w);
-            worker[i].setName(names[i]);
-            worker[i].start();
-        }
-            try {
-                worker[0].join();
-                worker[1].join();
-                worker[2].join();
-                worker[3].join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        //System.out.println("aggregatedBodies = " + aggregatedBodies.getMass());
-
-    }
-
-    public void threadMagic(Body[] bodies, QuadTree root, ReentrantLock lock){
-        int n = bodies.length;
-        for(int i = 0; i < n; i++){
-           // System.out.println(Thread.currentThread() + "" + i);
-            if (bodies[i].inQuad(quad)){
-               // System.out.println(Thread.currentThread() + "" + i);
-                build(bodies[i]);
-
-                lock.lock();
-                if(root.aggregatedBodies == null)
-                    root.aggregatedBodies = bodies[i];
-                else
-                    root.aggregatedBodies = root.aggregatedBodies.aggregate(bodies[i]);
-                lock.unlock();
-
-            }
-
-        }
-    }*/
 
     /**
      * Insert aggregatedBodies in tree
@@ -266,23 +206,6 @@ public class QuadTree {
 
 
 
-    }
-    public QuadTree getMyQuadTree(String quadName){
-        if (quadName.equals("NW")){
-            northWest = new QuadTree(quad.northWest(), theta);
-            return this.northWest;}
-        if (quadName.equals("NE")){
-            northEast = new QuadTree(quad.northEast(), theta);
-            return this.northEast;}
-        if (quadName.equals("SW")){
-            southWest = new QuadTree(quad.southWest(), theta);
-            return this.southWest;}
-        if (quadName.equals("SE")){
-            southEast = new QuadTree(quad.southEast(), theta);
-            return this.southEast;}
-        else    {
-            return null;
-        }
     }
 }
 

@@ -57,15 +57,6 @@ public class Body{
         this.force.setCoordinates(array);
 
     }
-//    public void addForce(Body b) {
-//        Body a = this;
-//        double dx = b.getXPosition() - a.getXPosition();
-//        double dy = b.getYPosition() - a.getYPosition();
-//        double dist = Math.sqrt(dx*dx + dy*dy);
-//        double F = (G * a.mass * b.mass) / (dist*dist);
-//        a.fx += F * dx / dist;
-//        a.fy += F * dy / dist;
-//    }
 
     public void update(double dt) {
         double[] v;
@@ -168,8 +159,6 @@ public class Body{
      * @return the aggregated body
      */
     public Body aggregate(Body body) {
-        //  Vector position = this.position.add(body.position);
-        //Vector velocity = this.velocity.add(body.velocity);
         double mass = this.mass + body.mass;
         double x[] = new double[2];
         double v[] = new double[2];

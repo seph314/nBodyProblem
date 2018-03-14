@@ -1,31 +1,25 @@
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.concurrent.CyclicBarrier;
 
 public class Driver {
 
     public static void main(String[] args) throws InterruptedException {
-        int gnumBodies = 120;//00;
-        int numSteps = 12000;//11000;//12000;
+        int gnumBodies = 1200000;
+        int numSteps = 1;
         double far = 0.5;
         int numWorkers = 4;
 
 
         double sizeOfTheUniverse = 200000;
         double[] startCoordinates = {sizeOfTheUniverse/2, sizeOfTheUniverse/2};
-        boolean firstrun = true;
         Vector[] forces = null;
         Body[] bodies = null;
         int dt = 2;
         long t1, t2, t3 = 0;
         int program =3;
-        //54407585
-        //65161521
-        //65161521
-        //29.999999878210353
-        //29.999995990389838
-       // while(program != 0){
-           /* System.out.println("\n****** N-body problem ****** \n");
+
+        while(program != 0){
+            System.out.println("\n****** N-body problem ****** \n");
 
             Scanner scanner = new Scanner(System.in);
 
@@ -35,7 +29,7 @@ public class Driver {
                     "2 - Parallel N2 \n" +
                     "3 - Sequential Barnes Hut \n" +
                     "4 - Parallel Barnes Hut \n" +
-                    "0 - Quit");
+                    "0 - Quit\n");
             program = scanner.nextInt();
 
             // Reads number of bodies from user
@@ -49,14 +43,14 @@ public class Driver {
             if(program == 3 || program == 4){
                 // Reads the distance used to decide when to approximate (Barnes-Hut programs only)
                 System.out.print("Distance to approximate: ");
-                far = scanner.nextInt();
+                far = scanner.nextDouble();
             }
 
             if(program == 2 || program == 4) {
                 // Reads number of threads from user (Parallel only)
                 System.out.print("Input number of threads: ");
                 numWorkers = scanner.nextInt();
-            }*/
+            }
 
 
             Creation creation = new Creation(gnumBodies, sizeOfTheUniverse, numSteps); /* creates random sized bodies via the Creation constructor */
@@ -64,21 +58,6 @@ public class Driver {
             forces = new Vector[gnumBodies]; /* a new force array with the length of tge bodies array */
             for (int i = 0; i < gnumBodies; i++)
                 forces[i] = new Vector(new double[2]);
-
-            /* prints the bodies positions */
-            /*for (int i = 0; i < bodies.length; i++) {
-                System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
-                System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
-                System.out.println("mass: " + bodies[i].getMass());
-            }*/
-
-            System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
-            System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
-            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());
-
-
-
-            //SimulateN2Parallel simulation = new SimulateN2Parallel(bodies, dt);
 
             /* Sequential N2 program */
             if (program == 1) {
@@ -101,7 +80,6 @@ public class Driver {
                 t1 = System.nanoTime();
                 InitiateBarnesHutSeq inBHS = new InitiateBarnesHutSeq(bodies, dt, far, numSteps, sizeOfTheUniverse, startCoordinates);
                 inBHS.buildQuadTree();
-                //inBHS.initiate();
                 t2 = System.nanoTime();
                 t3 = t2 - t1;
             }
@@ -110,43 +88,19 @@ public class Driver {
                 t1 = System.nanoTime();
                 InitiateBarnesHutParallel inBHP = new InitiateBarnesHutParallel(bodies, dt, far, numSteps, numWorkers, sizeOfTheUniverse, startCoordinates);
                 inBHP.buildQuadTree();
-                //inBHP.initiate();
                 t2 = System.nanoTime();
                 t3 = t2 - t1;
             }
-
-
-            //prints body, velocity and mass;
-            for (int i = 0; i<bodies.length; i++) {
-                System.out.println("\nBody " + i + "\nposition: " + Arrays.toString(bodies[i].getPosition()));
-                System.out.println("velocity: " + Arrays.toString(bodies[i].getVelocity()));
-                System.out.println("mass: " + bodies[i].getMass());
-            }
-
-           //prints last body
-/*        System.out.println("\nBody " + (bodies.length-2) + "\nposition: " + Arrays.toString(bodies[(bodies.length-2)].getPosition()));
-        System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-2)].getVelocity()));
-        System.out.println("mass: " + bodies[(bodies.length-2)].getMass());
-
-            System.out.println("\nBody " + (bodies.length-1) + "\nposition: " + Arrays.toString(bodies[(bodies.length-1)].getPosition()));
-            System.out.println("velocity: " + Arrays.toString(bodies[(bodies.length-1)].getVelocity()));
-            System.out.println("mass: " + bodies[(bodies.length-1)].getMass());*/
-
 
             System.out.println("\ngnumBodies = " + gnumBodies);
             System.out.println("numSteps = " + numSteps);
             System.out.println("far = " + far);
             System.out.println("numWorkers = " + numWorkers);
-        System.out.println("program = " + program);
+            System.out.println("program = " + program);
             System.out.println("The simulaiton took " + t3);
+            System.out.println(bodies[119].getXPosition());
 
-
-        //new Draw().updateMovement(bodies);
-
-
-
-
-       // }
+    }
     }
 
 }

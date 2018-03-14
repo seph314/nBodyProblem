@@ -49,9 +49,9 @@ public class InitiateBarnesHutParallel {
     private int numSteps;
     private int workers;
     private CyclicBarrier barrier;
-    double sizeOfTheUniverse;
-    double[] startCoordinates;
-    public QuadTree shared;
+    private double sizeOfTheUniverse;
+    private double[] startCoordinates;
+    private QuadTree shared;
     private Quad quad;
 
     public InitiateBarnesHutParallel(Body[] bodies, int dt, double far, int numSteps, int numWorkers, double sizeOfTheUniverse,  double[] startCoordinates) {
@@ -66,6 +66,10 @@ public class InitiateBarnesHutParallel {
         Vector startVector = new Vector(startCoordinates);
         this.quad = new Quad(startVector, sizeOfTheUniverse);
         this.shared = new QuadTree(quad, far);
+    }
+
+    public QuadTree getShared() {
+        return shared;
     }
 
     public void buildQuadTree() throws InterruptedException {
